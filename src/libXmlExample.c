@@ -67,11 +67,8 @@ main(int argc, char **argv)
     xmlDoc *doc = NULL;
     xmlNode *root_element = NULL;
 
-    if (argc != 2){
-        printf("usage: xmlExample <someXMLfile>\n");
-
+    if (argc != 2)
         return(1);
-    }
 
     /*
      * this initialize the library and check potential ABI mismatches

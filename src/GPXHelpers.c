@@ -82,6 +82,9 @@ char* getName(xmlNode* node){
         return NULL;
     }
     char*name=(char*)newNode->children->content;
+    if (name==NULL){
+        return "";
+    }
     return name;
 }
 
@@ -139,7 +142,7 @@ Waypoint* makeWaypoint(xmlNode* node){
     Waypoint* newWaypoint= createWaypoint(name, lon, lat);
     for (xmlNode* child = node->children; child!=NULL; child=child->next){
         char* name= (char*)child->name;
-        if(strcmp(name, "name")!=0){
+        if(strcmp(name, "name")!=0 && isText(child)==false){
             GPXData* g = makeGPXData(child);
             insertBack(newWaypoint->otherData, g);
         }
@@ -168,7 +171,7 @@ Route* makeRoute(xmlNode* node){
             Waypoint* w = makeWaypoint(child);
             insertBack(newRoute->waypoints, w);
         }
-        else{
+        else if (isText(child)==false && isName(child)==false){
             GPXData* g = makeGPXData(child);
             insertBack(newRoute->otherData, g);
         }
@@ -213,7 +216,7 @@ Track* makeTrack(xmlNode* node){
             TrackSegment* s=makeTrackSegment(child);
             insertBack(t->segments, s);
         }
-        else{
+        else if (isText(child)==false && isName(child)==false){
             GPXData* d=makeGPXData(child);
             insertBack(t->otherData, d);
         }
@@ -221,4 +224,19 @@ Track* makeTrack(xmlNode* node){
     return t;
 }
 
+bool isName(xmlNode* node){
+    char* name = (char*)node->name;
+    if (strcmp(name, "name")==0){
+        return true;
+    }
+    return false;
+}
+
+bool isText(xmlNode* node){
+    char* text = (char*)node->name;
+    if (strcmp(text, "text")==0){
+        return true;
+    }
+    return false;
+}
 

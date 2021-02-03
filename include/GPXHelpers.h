@@ -1,7 +1,19 @@
 #ifndef HELPER
 #define HELPER
 
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <libxml/parser.h>
+#include <libxml/tree.h>
+#include <libxml/encoding.h>
+#include <libxml/xmlwriter.h>
+#include <libxml/xmlschemastypes.h>
+#include "LinkedListAPI.h"
 #include "GPXParser.h"
+#include "GPXHelpers.h"
+
+
 
 GPXData* createGPXData(char* name, char* data);
 
@@ -32,5 +44,9 @@ TrackSegment* makeTrackSegment(xmlNode* node);
 Track* makeTrack(xmlNode* node);
 
 char* getName(xmlNode* node);
+
+bool isName(xmlNode* node);
+
+bool isText(xmlNode* node);
 
 #endif

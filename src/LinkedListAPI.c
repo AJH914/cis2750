@@ -287,7 +287,7 @@ char* toString(List * list){
 		char* currDescr = list->printData(elem);
 		int newLen = strlen(str)+50+strlen(currDescr);
 		str = (char*)realloc(str, newLen);
-		strcat(str, "\n");
+		//strcat(str, "\n");
 		strcat(str, currDescr);
 		
 		free(currDescr);
@@ -320,7 +320,7 @@ int getLength(List* list){
 }
 
 void* findElement(List * list, bool (*customCompare)(const void* first,const void* second), const void* searchRecord){
-	if (customCompare == NULL)
+	if (list == NULL || customCompare == NULL || searchRecord == NULL)
 		return NULL;
 
 	ListIterator itr = createIterator(list);
@@ -328,8 +328,9 @@ void* findElement(List * list, bool (*customCompare)(const void* first,const voi
 	void* data = nextElement(&itr);
 	while (data != NULL)
 	{
-		if (customCompare(data, searchRecord))
+		if (customCompare(data, searchRecord)){
 			return data;
+		}
 
 		data = nextElement(&itr);
 	}
