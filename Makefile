@@ -33,10 +33,10 @@ $(BIN)LinkedListAPI.o: $(SRC)LinkedListAPI.c $(INC)LinkedListAPI.h
 
 clean:
 	rm -rf $(BIN)StructListDemo $(BIN)xmlExample $(BIN)*.o $(BIN)*.so
-
+	
 #This is the target for the in-class XML example
-xmlExample: $(SRC)libXmlExample.c $(SRC)GPXHelpers.c $(SRC)GPXParser.c $(SRC)LinkedListAPI.c
-	$(CC) $(CFLAGS) -I$(XML_PATH) -I$(INC) $(SRC)libXmlExample.c $(SRC)GPXHelpers.c $(SRC)GPXParser.c $(SRC)LinkedListAPI.c -lxml2 -o $(BIN)xmlExample
+xmlExample: $(SRC)libXmlExample.c
+	$(CC) $(CFLAGS) -I$(XML_PATH) $(SRC)libXmlExample.c -lxml2 -o $(BIN)xmlExample
 
 #These are sample targets for the list demo code incldued in the class examples.  They will not be used
 #for A1, but they can help you figure out who to set up a target for your own test main
