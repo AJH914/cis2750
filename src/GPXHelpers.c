@@ -76,12 +76,9 @@ char* getName(xmlNode* node){
         }
     }
     if(newNode==NULL){
-        return NULL;
+        return "";
     }
-    if(newNode->children==NULL){
-        return NULL;
-    }
-    char*name=(char*)newNode->children->content;
+    char*name=(char*)newNode->content;
     if (name==NULL){
         return "";
     }
@@ -93,7 +90,7 @@ GPXData* createGPXData(char* name, char* data){
         return NULL;
     }
     else{
-        GPXData* newdata = calloc(1, sizeof(GPXData));
+        GPXData* newdata = calloc(1, sizeof(GPXData)+256);
         strcpy(newdata->value, data);
         strcpy(newdata->name, name);
         return newdata;
@@ -101,7 +98,7 @@ GPXData* createGPXData(char* name, char* data){
 }
 
 GPXData* makeGPXData(xmlNode* node){
-    return createGPXData((char*)node->name, (char*)node->content);
+    return createGPXData((char*)node->name, (char*)node->children->content);
 }
 
 Waypoint* createWaypoint(char* name, double longitude, double latitude){
@@ -204,6 +201,7 @@ Track* createTrack(char* name){
         Track* newTrack = calloc(1, sizeof(Track));
         newTrack->name=stringCopy(name, 0, strlen(name));
         newTrack->segments=initializeList(&trackSegmentToString, &deleteTrackSegment, &compareTrackSegments);
+        newTrack->otherData=initializeList(&gpxDataToString, &deleteGpxData, &compareGpxData);
         return newTrack;
     }
 }
