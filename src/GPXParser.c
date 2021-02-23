@@ -7,7 +7,7 @@
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlschemastypes.h>
 #include "LinkedListAPI.h"
-#include "GPXParser.h"
+#include "GPXParser_A2temp.h"
 #include "GPXHelpers.h"
 
 
@@ -74,6 +74,58 @@ GPXdoc* createGPXdoc(char* filename){
     xmlFreeDoc(doc);
     xmlCleanupParser();
     return gpxdoc;
+}
+
+GPXdoc* createValidGPXdoc(char* fileName, char* gpxSchemaFile){
+    xmlDocPtr doc;
+    xmlSchemaPtr schema = NULL;
+    xmlSchemaParserCtxtPtr ctxt;
+    char *XMLFileName = fileName;
+    char *XSDFileName = gpxSchemaFile;
+    GPXdoc* newdoc = NULL;
+
+    xmlLineNumbersDefault(1);
+
+    ctxt = xmlSchemaNewParserCtxt(XSDFileName);
+
+    xmlSchemaSetParserErrors(ctxt, (xmlSchemaValidityErrorFunc) fprintf, (xmlSchemaValidityWarningFunc) fprintf, stderr);
+    schema = xmlSchemaParse(ctxt);
+    xmlSchemaFreeParserCtxt(ctxt);
+    //xmlSchemaDump(stdout, schema); //To print schema dump
+
+    doc = xmlReadFile(XMLFileName, NULL, 0);
+
+    if (doc == NULL){
+        return;
+    }
+    else{
+        xmlSchemaValidCtxtPtr ctxt;
+        int ret;
+
+        ctxt = xmlSchemaNewValidCtxt(schema);
+        xmlSchemaSetValidErrors(ctxt, (xmlSchemaValidityErrorFunc) fprintf, (xmlSchemaValidityWarningFunc) fprintf, stderr);
+        ret = xmlSchemaValidateDoc(ctxt, doc);
+        if (ret == 0){
+            newdoc = createGPXdoc(fileName);
+        }
+        else if (ret > 0){
+            printf("%s fails to validate\n", XMLFileName);
+        }
+        else{
+            printf("%s validation generated an internal error\n", XMLFileName);
+        }
+        xmlSchemaFreeValidCtxt(ctxt);
+        xmlFreeDoc(doc);
+    }
+
+    // free the resource
+    if(schema != NULL)
+    xmlSchemaFree(schema);
+
+    xmlSchemaCleanupTypes();
+    xmlCleanupParser();
+    xmlMemoryDump();
+    return newdoc;
 }
 
 /** Function to create a string representation of an GPX object.

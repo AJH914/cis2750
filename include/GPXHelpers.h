@@ -10,8 +10,7 @@
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlschemastypes.h>
 #include "LinkedListAPI.h"
-#include "GPXParser.h"
-#include "GPXHelpers.h"
+#include "GPXParser_A2temp.h"
 
 
 

@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "GPXHelpers.h"
-#include "GPXParser.h"
+#include "GPXParser_A2temp.h"
 
 char* fileOpener(char* filename){
     if (filename==NULL){
