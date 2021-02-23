@@ -69,17 +69,12 @@ print_element_names(xmlNode * a_node)
  * walk down the DOM, and print the name of the 
  * xml elements nodes.
  */
-int
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-
-    if (argc != 2)
-        return(1);
-
-    GPXdoc* docptr = createGPXdoc(argv[1]);
-    char* data= GPXdocToString(docptr);
-    printf("%s", data);
-    deleteGPXdoc(docptr);
-    free(data);
+    GPXdoc* newdoc = createValidGPXdoc(argv[1], argv[2]);
+    char* s = GPXdocToString(newdoc);
+    printf("%s\n", s);
+    free(s);
+    deleteGPXdoc(newdoc);
     return 0;
 }
