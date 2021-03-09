@@ -18,7 +18,7 @@
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlschemastypes.h>
 #include "LinkedListAPI.h"
-#include "GPXParser_A2temp.h"
+#include "GPXParser.h"
 #include "GPXHelpers.h"
 
 /*
@@ -71,10 +71,9 @@ print_element_names(xmlNode * a_node)
  */
 int main(int argc, char **argv)
 {
-    GPXdoc* newdoc = createValidGPXdoc(argv[1], argv[2]);
-    char* s = GPXdocToString(newdoc);
-    printf("%s\n", s);
-    free(s);
+    GPXdoc* newdoc = JSONtoGPX("{\"version\":1.1,\"creator\":\"WebTool\"}");
+    printf("%s %.1f", newdoc->creator, newdoc->version);
+    
     deleteGPXdoc(newdoc);
     return 0;
 }

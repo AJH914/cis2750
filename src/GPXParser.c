@@ -7,7 +7,7 @@
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlschemastypes.h>
 #include "LinkedListAPI.h"
-#include "GPXParser_A2temp.h"
+#include "GPXParser.h"
 #include "GPXHelpers.h"
 
 
@@ -77,6 +77,9 @@ GPXdoc* createGPXdoc(char* filename){
 }
 
 GPXdoc* createValidGPXdoc(char* fileName, char* gpxSchemaFile){
+    if (fileName == NULL || gpxSchemaFile == NULL){
+        return NULL;
+    }
     xmlDocPtr doc;
     xmlSchemaPtr schema = NULL;
     xmlSchemaParserCtxtPtr ctxt;
@@ -96,7 +99,7 @@ GPXdoc* createValidGPXdoc(char* fileName, char* gpxSchemaFile){
     doc = xmlReadFile(XMLFileName, NULL, 0);
 
     if (doc == NULL){
-        return;
+        return NULL;
     }
     else{
         xmlSchemaValidCtxtPtr ctxt;
@@ -471,4 +474,349 @@ char* trackToString(void* data){
 }
 int compareTracks(const void *first, const void *second){
     return -1;
+}
+
+//-----------VALIDATE FUNCTIONS------------
+
+bool validateGPXDoc(GPXdoc* doc, char* gpxSchemaFile){
+    if (doc == NULL || gpxSchemaFile == NULL){
+        return false;
+    }
+    bool status = validateDoc(doc);
+    if (status==false){
+        return status;
+    }
+    xmlDoc* xmldoc = NULL;
+    xmlNode* root = NULL;
+    xmldoc = xmlNewDoc(BAD_CAST "1.0");
+    root = gpxDocToNode(doc);
+    xmlDocSetRootElement(xmldoc, root);
+    xmlSchemaParserCtxtPtr ctxt;
+    xmlLineNumbersDefault(1);
+    ctxt = xmlSchemaNewParserCtxt(gpxSchemaFile);
+    xmlSchemaSetParserErrors(ctxt, (xmlSchemaValidityErrorFunc) fprintf, (xmlSchemaValidityWarningFunc) fprintf, stderr);
+    xmlSchemaPtr schema = NULL;
+    schema = xmlSchemaParse(ctxt);
+    xmlSchemaFreeParserCtxt(ctxt);
+    xmlSchemaValidCtxtPtr ctxt2;
+    int ret;
+    ctxt2 = xmlSchemaNewValidCtxt(schema);
+    xmlSchemaSetValidErrors(ctxt2, (xmlSchemaValidityErrorFunc) fprintf, (xmlSchemaValidityWarningFunc) fprintf, stderr);
+    ret = xmlSchemaValidateDoc(ctxt2, xmldoc);
+    if (ret == 0){
+        status = true;
+    }
+    xmlSchemaFreeValidCtxt(ctxt2);
+    xmlFreeDoc(xmldoc);
+    if(schema != NULL)
+    xmlSchemaFree(schema);
+    xmlSchemaCleanupTypes();
+    xmlCleanupParser();
+    xmlMemoryDump();
+    return status;
+}
+
+bool writeGPXdoc(GPXdoc* doc, char* fileName){
+    if (doc == NULL || fileName == NULL){
+        return false;
+    }
+    xmlDoc* xmldoc = NULL;
+    xmlNode* root = NULL;
+    root = gpxDocToNode(doc);
+    xmldoc = xmlNewDoc(BAD_CAST "1.0");
+    xmlDocSetRootElement(xmldoc, root);
+    xmlSaveFormatFileEnc(fileName, xmldoc, "ISO-8859-1", 1);
+    /*free the document */
+    xmlFreeDoc(xmldoc);
+    /*
+     *Free the global variables that may
+     *have been allocated by the parser.
+     */
+    xmlCleanupParser();
+    /*
+     * this is to debug memory for regression tests
+     */
+    xmlMemoryDump();
+    return true;
+}
+
+//------------ A2 MODULE 2 FUNCTIONS -----------------
+
+float round10(float len){
+    int x = len;
+    int i = 0;
+    while (i<x){
+        i+=10;
+    }
+    if (i-x > 5){
+        return i-10;
+    }
+    else{
+        return i;
+    }
+}
+
+float getRouteLen(const Route *rt){
+    if (rt == NULL){
+        return 0;
+    }
+    Route* route = (Route*)rt;
+    float dist = 0;
+    for (Node* head = route->waypoints->head; head->next!=NULL; head=head->next){
+        Waypoint* w1 = head->data;
+        Waypoint* w2 = head->next->data;
+        dist += calcdistance(w1->latitude, w2->latitude, w1->longitude, w2->longitude);
+    }
+    return dist;
+}
+
+float getTrackLen(const Track *tr){
+    if (tr == NULL){
+        return 0;
+    }
+    Track* track = (Track*)tr;
+    float dist = 0;
+    List* waypoints = initializeList(&waypointToString, &dummyDelete, &compareWaypoints);
+    for (Node* head = track->segments->head; head!=NULL; head=head->next){
+        TrackSegment* seg = head->data;
+        for (Node* head2 = seg->waypoints->head; head2!=NULL; head2=head2->next){
+            insertBack(waypoints, head2->data);
+        }
+    }
+    for (Node* head = waypoints->head; head->next!=NULL; head=head->next){
+        Waypoint* w1 = head->data;
+        Waypoint* w2 = head->next->data;
+        dist += calcdistance(w1->latitude, w2->latitude, w1->longitude, w2->longitude);
+    }
+    freeList(waypoints);
+    return dist;
+}
+
+int numRoutesWithLength(const GPXdoc* doc, float len, float delta){
+    if (doc == NULL || len<0 || delta<0){
+        return 0;
+    }
+    GPXdoc* gpxdoc = (GPXdoc*)doc;
+    int counter=0;
+    for (Node* head = gpxdoc->routes->head; head!=NULL; head=head->next){
+        float dist = getRouteLen(head->data);
+        if (fabs(dist-len)<=delta){
+            counter++;
+        }
+    }
+    return counter;
+}
+
+int numTracksWithLength(const GPXdoc* doc, float len, float delta){
+    if (doc == NULL || len<0 || delta<0){
+        return 0;
+    }
+    GPXdoc* gpxdoc = (GPXdoc*)doc;
+    int counter=0;
+    for (Node* head = gpxdoc->tracks->head; head!=NULL; head=head->next){
+        float dist = getTrackLen(head->data);
+        if (fabs(dist-len)<=delta){
+            counter++;
+        }
+    }
+    return counter;
+}
+
+bool isLoopRoute(const Route* route, float delta){
+    if (route == NULL || delta<0){
+        return false;
+    }
+    Route* rt = (Route*)route;
+    if (getLength(rt->waypoints)<4){
+        return false;
+    }
+    Waypoint* w1 = rt->waypoints->head->data;
+    Waypoint* w2 = rt->waypoints->tail->data;
+    float dist = calcdistance(w1->latitude, w2->latitude, w1->longitude, w2->longitude);
+    if (dist<delta){
+        return true;
+    }
+    return false;
+}
+
+bool isLoopTrack(const Track *tr, float delta){
+    if (tr == NULL || delta<0){
+        return false;
+    }
+    Track* track = (Track*)tr;
+    if (getLength(track->segments)==0){
+        return false;
+    }
+    int numWaypoints = 0;
+    for (Node* head = track->segments->head; head!=NULL; head=head->next){
+        TrackSegment* seg = head->data;
+        numWaypoints += getLength(seg->waypoints);
+    }
+    if (numWaypoints<4){
+        return false;
+    }
+    else{
+        TrackSegment* seg1 = getSegWithWaypoint(track->segments, 1);
+        TrackSegment* seg2 = getSegWithWaypoint(track->segments, 0);
+        Waypoint* w1 = seg1->waypoints->head->data;
+        Waypoint* w2 = seg2->waypoints->tail->data;
+        float dist = calcdistance(w1->latitude, w2->latitude, w1->longitude, w2->longitude);
+        if (dist<delta){
+            return true;
+        }
+    }
+    return false;
+}
+
+List* getRoutesBetween(const GPXdoc* doc, float sourceLat, float sourceLong, float destLat, float destLong, float delta){
+    if (doc==NULL){
+        return NULL;
+    }
+    List* list = initializeList(&routeToString, &dummyDelete, &compareRoutes);
+    for (Node* head = doc->routes->head; head!=NULL; head=head->next){
+        Route* rte = head->data;
+        Waypoint* wpt1 = rte->waypoints->head->data;
+        Waypoint* wpt2 = rte->waypoints->tail->data;
+        if (calcdistance(sourceLat, wpt1->latitude, sourceLong, wpt1->longitude)<=delta && calcdistance(destLat, wpt2->latitude, destLong, wpt2->longitude)<=delta){
+            insertBack(list, rte);
+        }
+    }
+    if (getLength(list)>0){
+        return list;
+    }
+    else{
+        freeList(list);
+        return NULL;
+    }
+}
+
+List* getTracksBetween(const GPXdoc* doc, float sourceLat, float sourceLong, float destLat, float destLong, float delta){
+    if (doc==NULL){
+        return NULL;
+    }
+    List* list = initializeList(&trackToString, &dummyDelete, &compareTracks);
+    for (Node* head = doc->tracks->head; head!=NULL; head=head->next){
+        Track* trk = head->data;
+        TrackSegment* seg1 = getSegWithWaypoint(trk->segments, 1);
+        TrackSegment* seg2 = getSegWithWaypoint(trk->segments, 0);
+        Waypoint* wpt1 = seg1->waypoints->head->data;
+        Waypoint* wpt2 = seg2->waypoints->tail->data;
+        if (calcdistance(sourceLat, wpt1->latitude, sourceLong, wpt1->longitude)<=delta && calcdistance(destLat, wpt2->latitude, destLong, wpt2->longitude)<=delta){
+            insertBack(list, trk);
+        }
+    }
+    if (getLength(list)>0){
+        return list;
+    }
+    else{
+        freeList(list);
+        return NULL;
+    }
+}
+
+//------------ A2 MODULE 3 FUNCTIONS -----------------
+
+char* routeToJSON(const Route *rt){
+    return routeToJSON2((Route*)rt);
+}
+
+char* trackToJSON(const Track *tr){
+    return trackToJSON2((Track*)tr);
+}
+
+char* routeListToJSON(const List *list){
+    return listToJSON((List*)list, &routeToJSON2);
+}
+
+char* trackListToJSON(const List *list){
+    return listToJSON((List*)list, &trackToJSON2);
+}
+
+char* GPXtoJSON(const GPXdoc* gpx){
+    char* json = calloc(10000, sizeof(char));
+    if (gpx == NULL){
+        strcpy(json, "{}");
+        return json;
+    }
+    if (validateDoc((GPXdoc*)gpx) == false){
+        strcpy(json, "{}");
+        return json;
+    }
+    sprintf(json, "{\"version\":%.1f,\"creator\":\"%s\",\"numWaypoints\":%d,\"numRoutes\":%d,\"numTracks\":%d}", gpx->version, gpx->creator, getNumWaypoints(gpx), getNumRoutes(gpx), getNumTracks(gpx));
+    return json;
+}
+
+
+//----------------A2 BONUS FUNCTIONS---------------
+void addWaypoint(Route *rt, Waypoint *pt){
+    if (rt == NULL || pt == NULL){
+        return;
+    }
+    insertBack(rt->waypoints, pt);
+    return;
+}
+
+void addRoute(GPXdoc* doc, Route* rt){
+    if (rt == NULL || doc == NULL){
+        return;
+    }
+    insertBack(doc->routes, rt);
+    return;
+}
+
+GPXdoc* JSONtoGPX(const char* gpxString){
+    if (gpxString == NULL){
+        return NULL;
+    }
+    char* json = (char*)gpxString;
+    int commaindex = getIndex(json, ',');
+    char* firstItem = stringCopy(json, 2, commaindex);
+    char* secondItem = stringCopy(json, commaindex + 1, strlen(json)-2);
+    int colonindex = getIndex(firstItem, ':');
+    char* version = stringCopy(firstItem, colonindex+1, strlen(firstItem));
+    colonindex = getIndex(secondItem, ':');
+    char* creator = stringCopy(secondItem, colonindex+2, strlen(secondItem));
+    free(firstItem);
+    free(secondItem);
+    GPXdoc* newdoc = initDoc();
+    newdoc->version = atof(version);
+    strcpy(newdoc->creator, creator);
+    free(version);
+    free(creator);
+    return newdoc;
+}
+
+Waypoint* JSONtoWaypoint(const char* gpxString){
+    if (gpxString == NULL){
+        return NULL;
+    }
+    char* json = (char*)gpxString;
+    int commaindex = getIndex(json, ',');
+    char* firstItem = stringCopy(json, 2, commaindex);
+    char* secondItem = stringCopy(json, commaindex + 1, strlen(json)-1);
+    int colonindex = getIndex(firstItem, ':');
+    char* latVal = stringCopy(firstItem, colonindex + 1, strlen(firstItem));
+    colonindex = getIndex(secondItem, ':');
+    char* lonVal = stringCopy(secondItem, colonindex + 1, strlen(secondItem));
+    free(firstItem);
+    free(secondItem);
+    Waypoint* wpt = initWaypoint();
+    wpt->latitude = atof(latVal);
+    wpt->longitude = atof(lonVal);
+    free(latVal);
+    free(lonVal);
+    return wpt;
+}
+
+Route* JSONtoRoute(const char* gpxString){
+    if (gpxString == NULL){
+        return NULL;
+    }
+    char* json = (char*)gpxString;
+    int colonindex = getIndex(json, ':');
+    char* nameVal = stringCopy(json, colonindex + 2, strlen(json)-2);
+    Route* rte = initRoute();
+    strcpy(rte->name, nameVal);
+    free(nameVal);
+    return rte;
 }

@@ -10,9 +10,13 @@
 #include <libxml/xmlwriter.h>
 #include <libxml/xmlschemastypes.h>
 #include "LinkedListAPI.h"
-#include "GPXParser_A2temp.h"
+#include "GPXParser.h"
 
+GPXdoc* initDoc();
 
+Waypoint* initWaypoint();
+
+Route* initRoute();
 
 GPXData* createGPXData(char* name, char* data);
 
@@ -47,5 +51,51 @@ char* getName(xmlNode* node);
 bool isName(xmlNode* node);
 
 bool isText(xmlNode* node);
+
+
+
+//A2 HELPER FUNCTIONS-----------------------
+
+xmlNode* gpxDataToNode(GPXData* data, xmlNs* namespace);
+
+xmlNode* nameToNode(char* name, xmlNs* namespace);
+
+xmlNode* waypointToNode(Waypoint* wpt, char* name, xmlNs* namespace);
+
+xmlNode* routeToNode(Route* rte, xmlNs* namespace);
+
+xmlNode* segmentToNode(TrackSegment* seg, xmlNs* namespace);
+
+xmlNode* trackToNode(Track* trk, xmlNs* namespace);
+
+xmlNode* gpxDocToNode(GPXdoc* doc);
+
+float calcdistance(float lat1, float lat2, float lon1, float lon2);
+
+TrackSegment* getSegWithWaypoint(List* segments, int direction);
+
+bool validateData(GPXData* data);
+
+bool validateWaypoint(Waypoint* wpt);
+
+bool validateRoute(Route* rte);
+
+bool validateSegment(TrackSegment* seg);
+
+bool validateTrack(Track* trk);
+
+bool validateDoc(GPXdoc* doc);
+
+void dummyDelete(void* data);
+
+char* gpxDataToJSON(void* gpx);
+
+char* listToJSON(List* list, char* (*toJSON)(void*));
+
+char* routeToJSON2(void* data);
+
+char* trackToJSON2(void* data);
+
+int getIndex(char* string, char c);
 
 #endif
