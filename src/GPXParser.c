@@ -562,10 +562,12 @@ float getRouteLen(const Route *rt){
     }
     Route* route = (Route*)rt;
     float dist = 0;
-    for (Node* head = route->waypoints->head; head->next!=NULL; head=head->next){
-        Waypoint* w1 = head->data;
-        Waypoint* w2 = head->next->data;
-        dist += calcdistance(w1->latitude, w2->latitude, w1->longitude, w2->longitude);
+    if (route->waypoints->head!=NULL){
+        for (Node* head = route->waypoints->head; head->next!=NULL; head=head->next){
+            Waypoint* w1 = head->data;
+            Waypoint* w2 = head->next->data;
+            dist += calcdistance(w1->latitude, w2->latitude, w1->longitude, w2->longitude);
+        }
     }
     return dist;
 }
@@ -583,10 +585,12 @@ float getTrackLen(const Track *tr){
             insertBack(waypoints, head2->data);
         }
     }
-    for (Node* head = waypoints->head; head->next!=NULL; head=head->next){
-        Waypoint* w1 = head->data;
-        Waypoint* w2 = head->next->data;
-        dist += calcdistance(w1->latitude, w2->latitude, w1->longitude, w2->longitude);
+    if (waypoints->head!=NULL){
+        for (Node* head = waypoints->head; head->next!=NULL; head=head->next){
+            Waypoint* w1 = head->data;
+            Waypoint* w2 = head->next->data;
+            dist += calcdistance(w1->latitude, w2->latitude, w1->longitude, w2->longitude);
+        }
     }
     freeList(waypoints);
     return dist;

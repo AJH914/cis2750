@@ -617,7 +617,7 @@ char* routeToJSON2(void* data){
         return json;
     }
     char* isLoop = calloc(20, sizeof(char));
-    if (isLoopRoute(rt, 1)){
+    if (isLoopRoute(rt, 10)){
         strcat(isLoop, "true");
     }
     else{
@@ -644,7 +644,7 @@ char* trackToJSON2(void* data){
         return json;
     }
     char* isLoop = calloc(20, sizeof(char));
-    if (isLoopTrack(tr, 1)){
+    if (isLoopTrack(tr, 10)){
         strcat(isLoop, "true");
     }
     else{
