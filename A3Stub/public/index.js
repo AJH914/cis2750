@@ -37,6 +37,7 @@ $(document).ready(function() {
             //Create an object for connecting to another waypoint
         });
     });
+    $('#fileLogPanel').find('tbody').append(JSONtoFileLogPanel("{\"fn\":\"Reyn-to-Rozh\",\"version\":1.1,\"creator\":\"Denis\",\"numWaypoints\":1,\"numRoutes\":1,\"numTracks\":1}"))
 });
 
 //End of document.ready

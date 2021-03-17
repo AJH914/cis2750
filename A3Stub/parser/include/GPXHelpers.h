@@ -98,4 +98,6 @@ char* trackToJSON2(void* data);
 
 int getIndex(char* string, char c);
 
+char* gpxFileToJSON(char* filename);
+
 #endif

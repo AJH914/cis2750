@@ -672,3 +672,18 @@ int getIndex(char* string, char c){
     return -1;
 }
 
+// --------------   A3 FUNCTIONS   --------------
+
+char* gpxFileToJSON(char* filename){
+    GPXdoc* doc = createGPXdoc(filename);
+    if (doc == NULL){
+        return "{}";
+    }
+    char* json = calloc(10000, sizeof(char));
+    if (validateDoc((GPXdoc*)doc) == false){
+        strcpy(json, "{}");
+        return json;
+    }
+    sprintf(json, "{\"fn\":\"%s\",\"version\":%.1f,\"creator\":\"%s\",\"numWaypoints\":%d,\"numRoutes\":%d,\"numTracks\":%d}", filename, gpx->version, gpx->creator, getNumWaypoints(gpx), getNumRoutes(gpx), getNumTracks(gpx));
+    return json;
+}
