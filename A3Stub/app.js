@@ -3,7 +3,8 @@
 // C library API
 const ffi = require('ffi-napi');
 let parserLib = ffi.Library("./parser/bin/libgpxparser.so", {
-  "gpxFileToJSON": ["string", ["string"]]
+  "gpxFileToJSON": ["string", ["string"]],
+  "validateGPXDoc2": ["bool", ["string", "string"]] 
 
 });
 

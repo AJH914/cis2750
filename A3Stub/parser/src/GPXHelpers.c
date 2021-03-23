@@ -687,3 +687,11 @@ char* gpxFileToJSON(char* filename){
     sprintf(json, "{\"fn\":\"%s\",\"version\":%.1f,\"creator\":\"%s\",\"numWaypoints\":%d,\"numRoutes\":%d,\"numTracks\":%d}", filename, gpx->version, gpx->creator, getNumWaypoints(gpx), getNumRoutes(gpx), getNumTracks(gpx));
     return json;
 }
+
+bool validateGPXFile(char* filename, char* schemaFile){
+    GPXdoc* gpx = createValidGPXdoc(filename, schemaFile);
+    if (gpx == NULL){
+        return false;
+    }
+    return validateGPXDoc(doc, schemaFile);
+}

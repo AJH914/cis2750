@@ -100,4 +100,6 @@ int getIndex(char* string, char c);
 
 char* gpxFileToJSON(char* filename);
 
+bool validateGPXFile(char* filename, char* schemaFile);
+
 #endif
