@@ -100,7 +100,7 @@ function getFileLogPanelData(){
   arrayOfFilenames = fs.readdirSync(pathToFiles);
   var jsonArray = [];
   for (var filename of arrayOfFilenames){
-    var json = parserLib.gpxFileToJSON(filename);
+    var json = parserLib.gpxFileToJSON("../../uploads/"+filename);
     if (json!="{}"){
       jsonArray.push(json);
     }
