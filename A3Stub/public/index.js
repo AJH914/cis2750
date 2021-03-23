@@ -46,7 +46,7 @@ $(document).ready(function() {
         url : '/getFilenames',
         dataType : 'json',
         success : function(data){
-            var array = JSON.parse(data);
+            var array = JSON.parse(data.filenames);
             for (var filename of array){
                 console.log(filename);
                 $('.dropdown-content').append(JSONtoDropdown(filename));
