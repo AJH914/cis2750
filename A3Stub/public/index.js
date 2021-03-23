@@ -50,8 +50,9 @@ $(document).ready(function() {
 
 function JSONtoFileLogPanel(json){
     var obj = JSON.parse(json);
+    var fn = obj.fn.split("/");
     var html = "<tr>"+"<td>"+
-            obj.fn+"</td>"+
+            fn[fn.length-1]+"</td>"+
             "<td>"+obj.version+"</td>"
             +"<td>"+obj.creator+"</td>"+"<td>"+
             obj.numWaypoints+"</td>"+"<td>"+
