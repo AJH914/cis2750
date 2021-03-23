@@ -675,12 +675,12 @@ int getIndex(char* string, char c){
 // --------------   A3 FUNCTIONS   --------------
 
 char* gpxFileToJSON(char* filename){
-    GPXdoc* doc = createGPXdoc(filename);
-    if (doc == NULL){
+    GPXdoc* gpx = createGPXdoc(filename);
+    if (gpx == NULL){
         return "{}";
     }
     char* json = calloc(10000, sizeof(char));
-    if (validateDoc((GPXdoc*)doc) == false){
+    if (validateDoc((GPXdoc*)gpx) == false){
         strcpy(json, "{}");
         return json;
     }
