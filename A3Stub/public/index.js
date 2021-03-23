@@ -78,6 +78,6 @@ function JSONtoFileLogPanel(json){
 </div>*/
 
 function JSONtoDropdown(json){
-    var html = "<a> href=\"#\">"+json+"</a>";
+    var html = "<a href=\"#\">"+json+"</a>";
     return html;
 }
