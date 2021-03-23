@@ -4,7 +4,7 @@ $(document).ready(function() {
     $.ajax({
         type: 'get',            //Request type
         dataType: 'json',       //Data type - we will use JSON for almost everything 
-        url: '/endpoint1',   //The server endpoint we are connecting to
+        url: '/filelogdata',   //The server endpoint we are connecting to
         data: {
             stuff: "Value 1",
             junk: "Value 2"
@@ -15,7 +15,7 @@ $(document).ready(function() {
                 so we do not need to parse it on the server.
                 JavaScript really does handle JSONs seamlessly
             */
-            $('#blah').html("On page load, received string '"+data.stuff+"' from server");
+            //$('#blah').html("On page load, received string '"+data.stuff+"' from server");
             //We write the object to the console to show that the request was successful
             console.log(data); 
 
@@ -37,7 +37,7 @@ $(document).ready(function() {
             //Create an object for connecting to another waypoint
         });
     });
-    $('#fileLogPanel').find('tbody').append(JSONtoFileLogPanel("{\"fn\":\"Reyn-to-Rozh\",\"version\":1.1,\"creator\":\"Denis\",\"numWaypoints\":1,\"numRoutes\":1,\"numTracks\":1}"))
+    $
 });
 
 //End of document.ready

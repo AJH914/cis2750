@@ -2,6 +2,10 @@
 
 // C library API
 const ffi = require('ffi-napi');
+let parserLib = ffi.Library("./libgpxparser.so", {
+  "gpxFileToJSON": ["string", ["string"]]
+
+});
 
 // Express App (Routes)
 const express = require("express");
@@ -71,6 +75,14 @@ app.get('/uploads/:name', function(req , res){
 
 //******************** Your code goes here ******************** 
 
+app.get('/filelogdata', function(req, res){
+  var jsonArray = getFileLogPanelData();
+  console.log(jsonArray);
+  res.send({
+    jsondata : jsonArray
+  });
+});
+
 //Sample endpoint
 app.get('/endpoint1', function(req , res){
   let retStr = req.query.stuff + " " + req.query.junk;
@@ -81,3 +93,17 @@ app.get('/endpoint1', function(req , res){
 
 app.listen(portNum);
 console.log('Running app at localhost: ' + portNum);
+
+function getFileLogPanelData(){
+  var pathToFiles = path.join(__dirname + "/uploads/");
+  var arrayOfFilenames = [];
+  arrayOfFilenames = fs.readdirSync(pathToFiles);
+  var jsonArray = [];
+  for (var filename of arrayOfFilenames){
+    var json = parserLib.gpxFileToJSON(filename);
+    if (json!="{}"){
+      jsonArray.push(json);
+    }
+  }
+  return JSON.stringify(jsonArray);
+}
