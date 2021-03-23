@@ -51,7 +51,7 @@ $(document).ready(function() {
 function JSONtoFileLogPanel(json){
     var obj = JSON.parse(json);
     var fn = obj.fn.split("/");
-    var html = "<tr>"+"<td>"+"<a>"
+    var html = "<tr>"+"<td>"+"<a>"+
             fn[fn.length-1]+"</a>"+"</td>"+
             "<td>"+obj.version+"</td>"
             +"<td>"+obj.creator+"</td>"+"<td>"+
