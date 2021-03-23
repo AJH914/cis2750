@@ -100,10 +100,16 @@ function getFileLogPanelData(){
   arrayOfFilenames = fs.readdirSync(pathToFiles);
   var jsonArray = [];
   for (var filename of arrayOfFilenames){
-    var json = parserLib.gpxFileToJSON("../../uploads/"+filename);
-    if (json!="{}"){
-      jsonArray.push(json);
-    }
+    var newPath = "/parser/bin/"+filename;
+    fs.rename(filename, newPath, function (err){
+      if (err){
+        throw err;
+      }
+      var json = parserLib.gpxFileToJSON(newPath);
+      if (json!="{}"){
+        jsonArray.push(json);
+      }
+    });
   }
   return JSON.stringify(jsonArray);
 }
