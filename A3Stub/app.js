@@ -91,6 +91,16 @@ app.get('/endpoint1', function(req , res){
   });
 });
 
+app.get('/getFilenames', function(req, res){
+  var arrayOfFilenames = [];
+  var pathToFiles = path.join(__dirname + "/uploads/");
+  var arrayOfFilenames = [];
+  arrayOfFilenames = fs.readdirSync(pathToFiles);
+  res.send({
+    filenames : JSON.stringify(arrayOfFilenames)
+  });
+});
+
 app.listen(portNum);
 console.log('Running app at localhost: ' + portNum);
 

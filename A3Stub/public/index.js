@@ -41,7 +41,17 @@ $(document).ready(function() {
             //Create an object for connecting to another waypoint
         });
     });
-    $
+    $.ajax({
+        type : 'get',
+        url : '/getFilenames',
+        dataType : 'json',
+        success : function(data){
+            var array = JSON.parse(data);
+            for (var filename of array){
+                $('.dropdown-content').append(JSONtoDropdown(filename));
+            }
+        }
+    });
 });
 
 //End of document.ready
@@ -58,5 +68,15 @@ function JSONtoFileLogPanel(json){
             obj.numWaypoints+"</td>"+"<td>"+
             obj.numRoutes+"</td>"+"<td>"+
             obj.numTracks+"</td>"+"</tr>";
+    return html;
+}
+/*<div class="dropdown-content">
+    <a href="#">Link 1</a>
+    <a href="#">Link 2</a>
+    <a href="#">Link 3</a>
+</div>*/
+
+function JSONtoDropdown(json){
+    var html = "<a> href=\"#\">"+json+"</a>";
     return html;
 }
