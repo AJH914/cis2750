@@ -48,6 +48,7 @@ $(document).ready(function() {
         success : function(data){
             var array = JSON.parse(data);
             for (var filename of array){
+                console.log(filename);
                 $('.dropdown-content').append(JSONtoDropdown(filename));
             }
         }

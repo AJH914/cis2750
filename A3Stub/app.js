@@ -96,6 +96,7 @@ app.get('/getFilenames', function(req, res){
   var pathToFiles = path.join(__dirname + "/uploads/");
   var arrayOfFilenames = [];
   arrayOfFilenames = fs.readdirSync(pathToFiles);
+  console.log(arrayOfFilenames);
   res.send({
     filenames : JSON.stringify(arrayOfFilenames)
   });
