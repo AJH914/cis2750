@@ -18,6 +18,10 @@ $(document).ready(function() {
             //$('#blah').html("On page load, received string '"+data.stuff+"' from server");
             //We write the object to the console to show that the request was successful
             console.log(data); 
+            var jsonArray = JSON.parse(data);
+            for (var json of jsonArray){
+                $('#fileLogPanel').find('tbody').append(JSONtoFileLogPanel(json));
+            }
 
         },
         fail: function(error) {
