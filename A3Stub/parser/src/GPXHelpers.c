@@ -693,5 +693,5 @@ bool validateGPXFile(char* filename, char* schemaFile){
     if (gpx == NULL){
         return false;
     }
-    return validateGPXDoc(doc, schemaFile);
+    return validateGPXDoc(gpx, schemaFile);
 }
