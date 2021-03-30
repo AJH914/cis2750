@@ -698,7 +698,7 @@ bool validateGPXFile(char* filename, char* schemaFile){
 
 char* routeComponentToJSON(int routeNum, Route* route){
     char* json = calloc(100, sizeof(char));
-    const Route* rt = (const Route*)data;
+    Route* rt = route;
     if (rt == NULL){
         strcpy(json, "{}");
         return json;
@@ -727,7 +727,7 @@ char* routeComponentToJSON(int routeNum, Route* route){
 
 char* trackComponentToJSON(int trackNum, Track* track){
     char* json = calloc(100, sizeof(char));
-    const Track* tr = (const Track*)data;
+    Track* tr = track;
     if (tr == NULL){
         strcpy(json, "{}");
         return json;
