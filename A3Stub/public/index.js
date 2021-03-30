@@ -58,6 +58,7 @@ $(document).ready(function() {
     });
     $(document).on('click', '.dropdownLink', function(){
         currentFileName = $(this).text().toString();
+        $('#gpxViewPanel').find('tbody').empty();
         $.ajax({
             type : 'get',
             url : '/getGPXViewPanel',
