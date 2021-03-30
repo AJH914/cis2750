@@ -66,7 +66,9 @@ $(document).ready(function() {
                 filename : currentFileName
             },
             success : function(data){
-                //Append data to gpxviewtable
+                for (var json of data){
+                    $('#gpxViewPanel').find('tbody').append(JSONtoGPXViewTable(json));
+                }
             },
             fail : function(data){
                 //Append failed to gpxviewtable
@@ -99,5 +101,20 @@ function JSONtoFileLogPanel(json){
 
 function JSONtoDropdown(json){
     var html = "<a href=\"#\" class=\"dropdownLink\">"+json+"</a>";
+    return html;
+}
+
+function JSONtoGPXViewTable(json){
+    var component = json.component;
+    var name = json.name;
+    var numPoints = json.numPoints.toString();
+    var len = json.len.toString();
+    var loop = json.loop.toString();
+    var html = "<tr>"+"<td>"+"<a href=\"#\" class=\"otherDataLink\">"+component+"</a>"
+            +"</td>"+"<td>"+name
+            +"</td>"+"<td>"+numPoints
+            +"</td>"+"<td>"+len
+            +"</td>"+"<td>"+loop
+            +"</td>"+"</tr>";
     return html;
 }
