@@ -102,4 +102,13 @@ char* gpxFileToJSON(char* filename);
 
 bool validateGPXFile(char* filename, char* schemaFile);
 
+char* routeComponentToJSON(int routeNum, Route* route);
+
+char* trackComponentToJSON(int trackNum, Track* track);
+
+char* gpxComponentsToJSON(char* filename);
+
+int getNumWaypointsTrack(Track* track);
+
+
 #endif

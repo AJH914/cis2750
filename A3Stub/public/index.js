@@ -1,4 +1,7 @@
 // Put all onload AJAX calls here, and event listeners
+
+let currentFileName = "";
+
 $(document).ready(function() {
     // On page-load AJAX Example
     $.ajax({
@@ -53,6 +56,23 @@ $(document).ready(function() {
             }
         }
     });
+    $(document).on('click', '.dropdownLink', function(){
+        currentFileName = $(this).text().toString();
+        $.ajax({
+            type : 'get',
+            url : '/getGPXViewPanel',
+            dataType : 'json',
+            data : {
+                filename : currentFileName
+            },
+            success : function(data){
+                //Append data to gpxviewtable
+            },
+            fail : function(data){
+                //Append failed to gpxviewtable
+            }
+        });
+    });
 });
 
 //End of document.ready
@@ -78,6 +98,6 @@ function JSONtoFileLogPanel(json){
 </div>*/
 
 function JSONtoDropdown(json){
-    var html = "<a href=\"#\">"+json+"</a>";
+    var html = "<a href=\"#\" class=\"dropdownLink\">"+json+"</a>";
     return html;
 }

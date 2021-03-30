@@ -103,6 +103,11 @@ app.get('/getFilenames', function(req, res){
   });
 });
 
+app.get('/getGPXViewPanel', function(req, res){
+  var filename = "./uploads/"+req.query.filename;
+  
+});
+
 app.listen(portNum);
 console.log('Running app at localhost: ' + portNum);
 
@@ -120,3 +125,4 @@ function getFileLogPanelData(){
   }
   return JSON.stringify(jsonArray);
 }
+

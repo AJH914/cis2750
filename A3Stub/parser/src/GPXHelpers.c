@@ -695,3 +695,140 @@ bool validateGPXFile(char* filename, char* schemaFile){
     }
     return validateGPXDoc(gpx, schemaFile);
 }
+
+char* routeComponentToJSON(int routeNum, Route* route){
+    char* json = calloc(100, sizeof(char));
+    const Route* rt = (const Route*)data;
+    if (rt == NULL){
+        strcpy(json, "{}");
+        return json;
+    }
+    char* isLoop = calloc(20, sizeof(char));
+    if (isLoopRoute(rt, 10)){
+        strcat(isLoop, "true");
+    }
+    else{
+        strcat(isLoop, "false");
+    }
+    char* name = calloc(256, sizeof(char));
+    if (strlen(rt->name)>0){
+        strcat(name, rt->name);
+    }
+    else{
+        strcat(name, "None");
+    }
+    char component[256];
+    sprintf(component, "Route %d", routeNum);
+    sprintf(json, "{\"component\":\"%s\",\"name\":\"%s\",\"numPoints\":%d,\"len\":%.1f,\"loop\":%s}", component, name, getLength(rt->waypoints), round10(getRouteLen(rt)), isLoop);
+    free(isLoop);
+    free(name);
+    return json;
+}
+
+char* trackComponentToJSON(int trackNum, Track* track){
+    char* json = calloc(100, sizeof(char));
+    const Track* tr = (const Track*)data;
+    if (tr == NULL){
+        strcpy(json, "{}");
+        return json;
+    }
+    char* isLoop = calloc(20, sizeof(char));
+    if (isLoopTrack(tr, 10)){
+        strcat(isLoop, "true");
+    }
+    else{
+        strcat(isLoop, "false");
+    }
+    char* name = calloc(256, sizeof(char));
+    if (strlen(tr->name)>0){
+        strcat(name, tr->name);
+    }
+    else{
+        strcat(name, "None");
+    }
+    char component[256];
+    int numWaypoints = getNumWaypointsTrack(track);
+    sprintf(component, "Track %d", trackNum);
+    sprintf(json, "{\"component\":\"%s\",\"name\":\"%s\",\"numPoints\":%d,\"len\":%.1f,\"loop\":%s}", component, name, numWaypoints, round10(getTrackLen(tr)), isLoop);
+    
+    free(isLoop);
+    free(name);
+    return json;
+}
+
+char* gpxComponentsToJSON(char* filename){
+    GPXdoc* doc = createGPXdoc(filename);
+    int memsize = 1000;
+    char* json = calloc(memsize, sizeof(char));
+    strcat(json, "[");
+    int routeLen = getLength(doc->routes);
+    int trackLen = getLength(doc->tracks);
+    int count = 1;
+    if (routeLen>0 && trackLen>0){
+        for (Node* node = doc->routes->head; node!=NULL; node=node->next){
+            Route* route = node->data;
+            char* temp = routeComponentToJSON(count, route);
+            memsize+=strlen(temp);
+            json = realloc(json, memsize*sizeof(char));
+            strcat(json, temp);
+            strcat(json, ",");
+            count++;
+            free(temp);
+        }
+        count = 1;
+        for (Node* node = doc->tracks->head; node!=NULL; node=node->next){
+            Track* track = node->data;
+            char* temp = trackComponentToJSON(count, track);
+            memsize+=strlen(temp);
+            json = realloc(json, memsize*sizeof(char));
+            strcat(json, temp);
+            if (node->next!=NULL){
+                strcat(json, ",");
+            }
+            count++;
+            free(temp);
+        }
+    }
+    else if (routeLen>0){
+        for (Node* node = doc->routes->head; node!=NULL; node=node->next){
+            Route* route = node->data;
+            char* temp = routeComponentToJSON(count, route);
+            memsize+=strlen(temp);
+            json = realloc(json, memsize*sizeof(char));
+            strcat(json, temp);
+            if (node->next!=NULL){
+                strcat(json, ",");
+            }
+            count++;
+            free(temp);
+        }
+    }
+    else if (trackLen>0){
+        for (Node* node = doc->routes->head; node!=NULL; node=node->next){
+            Track* track = node->data;
+            char* temp = trackComponentToJSON(count, track);
+            memsize+=strlen(temp);
+            json = realloc(json, memsize*sizeof(char));
+            strcat(json, temp);
+            if (node->next!=NULL){
+                strcat(json, ",");
+            }
+            count++;
+            free(temp);
+        }
+    }
+    strcat(json, "]");
+    return json;
+}
+
+int getNumWaypointsTrack(Track* track){
+    int count = 0;
+    if (track == NULL){
+        return count;
+    }
+    for (Node* node = track->segments->head; node!=NULL; node=node->next){
+        TrackSegment* seg = node->data;
+        count+=getLength(seg->waypoints);
+    }
+    return count;
+}
