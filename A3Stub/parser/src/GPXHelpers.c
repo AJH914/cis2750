@@ -764,6 +764,7 @@ char* gpxComponentsToJSON(char* filename){
     int routeLen = getLength(doc->routes);
     int trackLen = getLength(doc->tracks);
     int count = 1;
+    printf("%d %d\n", routeLen, trackLen);
     if (routeLen>0 && trackLen>0){
         for (Node* node = doc->routes->head; node!=NULL; node=node->next){
             Route* route = node->data;
