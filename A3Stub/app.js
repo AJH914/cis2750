@@ -114,7 +114,9 @@ app.get('/getGPXViewPanel', function(req, res){
 app.get('/getOtherData', function(req, res){
   var filename = "./uploads/"+req.query.filename;
   var compName = req.query.compName;
+  console.log(compName);
   var otherData = parserLib.otherDataListToJSON(filename, compName);
+  console.log(otherData);
   res.send(otherData);
 });
 
