@@ -110,5 +110,6 @@ char* gpxComponentsToJSON(char* filename);
 
 int getNumWaypointsTrack(Track* track);
 
+char* otherDataListToJSON(char* filename, char* componentName);
 
 #endif

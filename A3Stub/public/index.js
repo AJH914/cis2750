@@ -1,6 +1,7 @@
 // Put all onload AJAX calls here, and event listeners
 
 let currentFileName = "";
+let componentName = "";
 
 $(document).ready(function() {
     // On page-load AJAX Example
@@ -71,8 +72,27 @@ $(document).ready(function() {
                     $('#gpxViewPanel').find('tbody').append(JSONtoGPXViewTable(json));
                 }
             },
-            fail : function(data){
+            fail : function(error){
                 //Append failed to gpxviewtable
+            }
+        });
+    });
+    $(document).on('click', '.otherDataLink', function(e){
+        e.preventDefault();
+        componentName = $(this).text().toString();
+        $.ajax({
+            type : 'get',
+            url : '/getOtherData',
+            dataType : 'json',
+            data : {
+                compName : componentName,
+                filename : currentFileName
+            },
+            success : function(data){
+                alert(data);
+            },
+            fail : function(error){
+                alert(error);
             }
         });
     });

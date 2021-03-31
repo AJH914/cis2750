@@ -832,3 +832,28 @@ int getNumWaypointsTrack(Track* track){
     }
     return count;
 }
+
+char* otherDataListToJSON(char* filename, char* componentName){
+    if (filename == NULL || componentName == NULL){
+        return "[]";
+    }
+    GPXdoc* doc = createGPXdoc(filename);
+    if (doc == NULL){
+        return "[]";
+    }
+    Route* route = getRoute(doc, componentName);
+    Track* track = getTrack(doc, componentName);
+    if (route == NULL && track == NULL){
+        return "[]";
+    }
+    else if (route != NULL){
+        char* json = listToJSON(route->otherData, &gpxDataToJSON);
+        return json;
+    }
+    else{
+        char* json = listToJSON(track->otherData, &gpxDataToJSON);
+        return json;
+    }
+}
+
+

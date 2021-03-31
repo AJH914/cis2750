@@ -5,7 +5,8 @@ const ffi = require('ffi-napi');
 let parserLib = ffi.Library("./parser/bin/libgpxparser.so", {
   "gpxFileToJSON": ["string", ["string"]],
   "validateGPXFile": ["bool", ["string", "string"]],
-  "gpxComponentsToJSON": ["string", ["string"]]
+  "gpxComponentsToJSON": ["string", ["string"]],
+  "otherDataListToJSON": ["string", ["string", "string"]]
 });
 
 // Express App (Routes)
@@ -107,6 +108,13 @@ app.get('/getGPXViewPanel', function(req, res){
   var filename = "./uploads/"+req.query.filename;
   var array = parserLib.gpxComponentsToJSON(filename);
   res.send(array);
+});
+
+app.get('/getOtherData', function(req, res){
+  var filename = "./uploads/"+req.query.filename;
+  var compName = req.query.compName;
+  var otherData = parserLib.otherDataListToJSON(filename, compName);
+  res.send(otherData);
 });
 
 app.listen(portNum);
