@@ -89,7 +89,7 @@ $(document).ready(function() {
                 filename : currentFileName
             },
             success : function(data){
-                alert(data);
+                alert(JSON.stringify(data));
             },
             fail : function(error){
                 alert(error);
