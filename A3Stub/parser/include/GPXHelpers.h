@@ -112,4 +112,6 @@ int getNumWaypointsTrack(Track* track);
 
 char* otherDataListToJSON(char* filename, char* componentName);
 
+bool changeName(char* filename, char* oldName, char* newName);
+
 #endif
