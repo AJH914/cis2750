@@ -6,7 +6,8 @@ let parserLib = ffi.Library("./parser/bin/libgpxparser.so", {
   "gpxFileToJSON": ["string", ["string"]],
   "validateGPXFile": ["bool", ["string", "string"]],
   "gpxComponentsToJSON": ["string", ["string"]],
-  "otherDataListToJSON": ["string", ["string", "string"]]
+  "otherDataListToJSON": ["string", ["string", "string"]],
+  "changeName": ["bool", ["string", "string", "string"]]
 });
 
 // Express App (Routes)
@@ -21,6 +22,7 @@ app.use(express.static(path.join(__dirname+'/uploads')));
 // Minimization
 const fs = require('fs');
 const JavaScriptObfuscator = require('javascript-obfuscator');
+const { stringify } = require('querystring');
 
 // Important, pass in port as in `npm run dev 1234`, do not change
 const portNum = process.argv[2];
@@ -116,14 +118,16 @@ app.get('/getOtherData', function(req, res){
   var compName = req.query.compName;
   console.log(compName);
   var otherData = parserLib.otherDataListToJSON(filename, compName);
-  var array = JSON.parse(otherData);
-  for (var obj of array){
-    console.log(obj);
-    //obj.name = obj.name.trim();
-    //obj.value = obj.value.trim();
-  }
-  console.log(array);
-  res.send(JSON.stringify(array));
+  console.log(otherData);
+  res.send(otherData);
+});
+
+app.get('/changeComponentName', function(req, res){
+  var filename = "./uploads/"+req.query.filename;
+  var compName = req.query.compName;
+  var newName = req.query.nName;
+  var changeName = parserLib.changeName(filename, compName, newName);
+  res.send(changeName);
 });
 
 app.listen(portNum);

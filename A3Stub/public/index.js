@@ -97,6 +97,33 @@ $(document).ready(function() {
             }
         });
     });
+    $(document).on('click', '#renameButton', function(e){
+        e.preventDefault();
+        var newName = $('#entryBox').val();
+        $.ajax({
+            type : 'get',
+            url : '/changeComponentName',
+            dataType : 'json',
+            data : {
+                compName : componentName,
+                filename : currentFileName,
+                nName : newName
+            },
+            success : function(data){
+                if (data == true){
+                    alert("Successfully changed name");
+                }
+                else{
+                    alert("Failed to change name");
+                }
+                console.log(data);
+                alert(JSON.stringify(data));
+            },
+            fail : function(error){
+                alert(error);
+            }
+        });
+    });
 });
 
 //End of document.ready

@@ -857,4 +857,23 @@ char* otherDataListToJSON(char* filename, char* componentName){
     }
 }
 
-
+bool changeName(char* filename, char* oldName, char* newName){
+    if (filename == NULL || oldName == NULL || newName == NULL){
+        return false;
+    }
+    GPXdoc* doc = createGPXdoc(filename);
+    if (doc == NULL){
+        return false;
+    }
+    Route* route = getRoute(doc, oldName);
+    if (route != NULL){
+        strcpy(route->name, newName);
+        return true;
+    }
+    Track* track = getTrack(doc, oldName);
+    if (track != NULL){
+        strcpy(track->name, newName);
+        return true;
+    }
+    return false;
+}

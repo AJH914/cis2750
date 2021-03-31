@@ -25,16 +25,7 @@
     <hr>
     <div id="blah">I am blah</div>
     <hr>
-    <form ref='someform'
-          id='someform'>
-          <div class="form-group">
-                <label for="entryBox">Last Name</label>
-                <input type="text" class="form-control" id="entryBox" value="Value" placeholder="Placeholder">
-          </div>
-        <div class="form-group">
-            <input type='submit' class="btn btn-secondary">
-        </div>
-    </form>
+    
 
     <form ref='uploadForm'
 		id='uploadForm'
@@ -98,7 +89,18 @@
             </table>
         </div>
     </div>
-
+    <div>
+        <form ref='someform'
+          id='someform'>
+            <div class="form-group">
+                <label for="entryBox">Rename Component(click component to rename)</label>
+                <input type="text" class="form-control" id="entryBox" value="Value" placeholder="Placeholder">
+            </div>
+            <div class="form-group">
+                <input id='renameButton'type='submit' class="btn btn-secondary">
+            </div>
+        </form>
+    </div>
     <!-- Leave me at the bottom of body -->
     <script src="index.js"></script>
 </body>
