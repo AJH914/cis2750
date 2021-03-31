@@ -868,12 +868,12 @@ bool changeName(char* filename, char* oldName, char* newName){
     Route* route = getRoute(doc, oldName);
     if (route != NULL){
         strcpy(route->name, newName);
-        return true;
+        return writeGPXdoc(doc, filename);
     }
     Track* track = getTrack(doc, oldName);
     if (track != NULL){
         strcpy(track->name, newName);
-        return true;
+        return writeGPXdoc(doc, filename);
     }
     return false;
 }
