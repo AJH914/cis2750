@@ -116,13 +116,14 @@ app.get('/getOtherData', function(req, res){
   var compName = req.query.compName;
   console.log(compName);
   var otherData = parserLib.otherDataListToJSON(filename, compName);
-  for (var obj of otherData){
+  var array = JSON.parse(otherData);
+  for (var obj of array){
     console.log(obj);
     //obj.name = obj.name.trim();
     //obj.value = obj.value.trim();
   }
-  console.log(otherData);
-  res.send(otherData);
+  console.log(array);
+  res.send(JSON.stringify(array));
 });
 
 app.listen(portNum);

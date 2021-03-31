@@ -842,7 +842,6 @@ char* otherDataListToJSON(char* filename, char* componentName){
     if (doc == NULL){
         return "[]";
     }
-    printf("%s\n", componentName);
     Route* route = getRoute(doc, componentName);
     Track* track = getTrack(doc, componentName);
     if (route == NULL && track == NULL){
