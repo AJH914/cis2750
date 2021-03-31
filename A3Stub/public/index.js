@@ -111,8 +111,8 @@ function JSONtoGPXViewTable(json){
     var numPoints = json.numPoints.toString();
     var len = json.len.toString();
     var loop = json.loop.toString();
-    var html = "<tr>"+"<td>"+"<a href=\"#\" class=\"otherDataLink\">"+component+"</a>"
-            +"</td>"+"<td>"+name
+    var html = "<tr>"+"<td>"+component+"</td>"
+            +"<td>"+"<a href=\"#\" class=\"otherDataLink\">"+name+"</a>"
             +"</td>"+"<td>"+numPoints
             +"</td>"+"<td>"+len
             +"</td>"+"<td>"+loop
