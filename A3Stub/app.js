@@ -107,6 +107,7 @@ app.get('/getFilenames', function(req, res){
 app.get('/getGPXViewPanel', function(req, res){
   var filename = "./uploads/"+req.query.filename;
   var array = parserLib.gpxComponentsToJSON(filename);
+  console.log(array);
   res.send(array);
 });
 
