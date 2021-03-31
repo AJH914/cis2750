@@ -24,8 +24,7 @@ xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/
     </rte>
     <trk>
         <name>Mount Steele Trail</name>
-        <desc>Steep but continuous beaten path. From the Edwards Lake cabin continue east.
-        </desc>
+        <desc>Steep but continuous beaten path. From the Edwards Lake cabin continue east.</desc>
         <trkseg>
             <trkpt lat="49.595850" lon="-123.620950">
                 <name>Track Start</name>
