@@ -116,8 +116,10 @@ app.get('/getOtherData', function(req, res){
   var compName = req.query.compName;
   console.log(compName);
   var otherData = parserLib.otherDataListToJSON(filename, compName);
-  otherData.name = otherData.name.trim();
-  otherData.value = otherData.value.trim();
+  for (var obj of otherData){
+    obj.name = obj.name.trim();
+    obj.value = obj.value.trim();
+  }
   console.log(otherData);
   res.send(otherData);
 });
