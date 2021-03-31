@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <title>CHANGE ME</title>
     <meta charset="utf-8">
@@ -8,73 +9,153 @@
     <meta name="keywords" content="CHANGE ME">
     <meta name="author" content="CHANGE ME">
     <!-- Load jquery, bootstrap -->
-    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+        integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" type="text/css" href="/style.css">
     <!-- Custom CSS End -->
 </head>
+
 <body>
     <h3>Download test</h3>
-    If the A3 stub is running and simple.gpx exists in the uploads/ directory on the server, then clicking on the link below will download it from the server.<br>
+    If the A3 stub is running and simple.gpx exists in the uploads/ directory on the server, then clicking on the link
+    below will download it from the server.<br>
     <a href="testCard.vcf" download ">simple.gpx</a>
     <p></p>
 
     <hr>
-    <div id="blah">I am blah</div>
-    <hr>
-    
+    <div id=" blah">I am blah</div>
+        <hr>
 
-    <form ref='uploadForm'
-		id='uploadForm'
-      action='/upload'
-      method='post'
-      encType="multipart/form-data">
-      <div class="form-group">
-      	<input type="file" name="uploadFile" class="btn btn-secondary">
-      	<input type='submit' value='Upload' class="btn btn-secondary">
-      </div>
-    </form>
 
-    <!-- File log panel -->
-    <div>
-    <table id='fileLogPanel'>
-        <thead>
-            <tr>
-                <th> File name (click to download) </th>
-                <th> Version </th>
-                <th> Creator </th>
-                <th> Number of waypoints </th>
-                <th> Number of routes </th>
-                <th> Number of tracks </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td> simple.gpx </td>
-                <td> 1.1 </td>
-                <td> Denis Nikitenko 2019.08.08 </td>
-                <td> 3 </td>
-                <td> 1 </td>
-                <td> 1 </td>
-            </tr>
-        </tbody>
-    </table>
-    </div>
-    
-    <!-- End of file log panel -->
+        <form ref='uploadForm' id='uploadForm' action='/upload' method='post' encType="multipart/form-data">
+            <div class="form-group">
+                <input type="file" name="uploadFile" class="btn btn-secondary">
+                <input type='submit' value='Upload' class="btn btn-secondary">
+            </div>
+        </form>
 
-    <!-- GPX View Panel-->
-    <div>
-        <div class="dropdown">
-            <button class="dropbtn">Dropdown</button>
-            <div class="dropdown-content">
+        <!-- File log panel -->
+        <div>
+            <table id='fileLogPanel'>
+                <thead>
+                    <tr>
+                        <th> File name (click to download) </th>
+                        <th> Version </th>
+                        <th> Creator </th>
+                        <th> Number of waypoints </th>
+                        <th> Number of routes </th>
+                        <th> Number of tracks </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> simple.gpx </td>
+                        <td> 1.1 </td>
+                        <td> Denis Nikitenko 2019.08.08 </td>
+                        <td> 3 </td>
+                        <td> 1 </td>
+                        <td> 1 </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- End of file log panel -->
+
+        <!-- GPX View Panel-->
+        <div>
+            <div class="dropdown">
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                </div>
+            </div>
+            <div>
+                <table id='gpxViewPanel'>
+                    <thead>
+                        <tr>
+                            <th> Component </th>
+                            <th> Name </th>
+                            <th> Number of Points </th>
+                            <th> Length </th>
+                            <th> Loop </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
         </div>
         <div>
-            <table id = 'gpxViewPanel'>
+            <form ref='someform' id='renameForm'>
+                <div class="form-group">
+                    <label for="entryBox">Rename Component(click component to rename)</label>
+                    <input type="text" class="form-control" id="entryBox" value="Value" placeholder="Placeholder">
+                </div>
+                <div class="form-group">
+                    <input id='renameButton' type='submit' class="btn btn-secondary">
+                </div>
+            </form>
+        </div>
+        <div>
+            <form ref='someform' id='createGPXForm'>
+                <div class="form-group">
+                    <label for="entryBox">Create GPX: Enter File Name</label>
+                    <input type="text" class="form-control" value="Value" placeholder="Placeholder">
+                </div>
+                <div class="form-group">
+                    <input id='createGPXButton' type='submit' value='Create GPX' class="btn btn-secondary">
+                </div>
+            </form>
+        </div>
+        <div>
+            <div class="dropdown">
+                <button class="dropbtn">Dropdown</button>
+                <div class="dropdown-content">
+                </div>
+            </div>
+            <form ref='someform' id='addRoute'>
+                <div class="form-group">
+                    <label for="entryBox">Create Route: Select File Name</label>
+                    <label for="entryBox">Enter a route name</label>
+                    <input type="text" class="form-control" value="Value" placeholder="Placeholder">
+                    <label for="entryBox">Enter a waypoint name</label>
+                    <input type="text" class="form-control" value="Value" placeholder="Placeholder">
+                </div>
+                <div class="form-group">
+                    <input id='createRouteButton' type='submit' value='Create Route' class="btn btn-secondary">
+                </div>
+            </form>
+        </div>
+        <div>
+            <form ref='someform' id='getDistance'>
+                <div class="form-group">
+                    <label for="entryBox">Get the distance between points</label>
+                    <label for="entryBox">Enter first latitude</label>
+                    <input type="text" class="form-control" value="Value" placeholder="Placeholder">
+                    <label for="entryBox">Enter first logitude</label>
+                    <input type="text" class="form-control" value="Value" placeholder="Placeholder">
+                    <label for="entryBox">Enter second latitude</label>
+                    <input type="text" class="form-control" value="Value" placeholder="Placeholder">
+                    <label for="entryBox">Enter second logitude</label>
+                    <input type="text" class="form-control" value="Value" placeholder="Placeholder">
+                    <label for="entryBox">Enter point comparison accuracy</label>
+                    <input type="text" class="form-control" value="Value" placeholder="Placeholder">
+                </div>
+                <div class="form-group">
+                    <input id='findPathBetween' type='submit' value='Find Tracks/Routes between'
+                        class="btn btn-secondary">
+                </div>
+            </form>
+            <table>
                 <thead>
                     <tr>
                         <th> Component </th>
@@ -88,55 +169,8 @@
                 </tbody>
             </table>
         </div>
-    </div>
-    <div>
-        <form ref='someform'
-          id='renameForm'>
-            <div class="form-group">
-                <label for="entryBox">Rename Component(click component to rename)</label>
-                <input type="text" class="form-control" id="entryBox" value="Value" placeholder="Placeholder">
-            </div>
-            <div class="form-group">
-                <input id='renameButton'type='submit' class="btn btn-secondary">
-            </div>
-        </form>
-    </div>
-    <div>
-        <form ref='someform'
-          id='createGPXForm'>
-            <div class="form-group">
-                <label for="entryBox">Create GPX: Enter File Name</label>
-                <input type="text" class="form-control" id="entryBox" value="Value" placeholder="Placeholder">
-            </div>
-            <div class="form-group">
-                <input id='createGPXButton' type='submit' value='Create GPX' class="btn btn-secondary">
-            </div>
-        </form>
-    </div>
-    <div>
-        <div class="dropdown">
-            <button class="dropbtn">Dropdown</button>
-            <div class="dropdown-content">
-            </div>
-        </div>
-        <form ref='someform'
-            id='addRoute'>
-            <div class="form-group">
-                <label for="entryBox">Create Route: Select File Name</label>
-                <input type="text" class="form-control" id="entryBox" value="Value" placeholder="Placeholder">
-            </div>
-            <div class="form-group">
-                <input id='createGPXButton' type='submit' value='Create GPX' class="btn btn-secondary">
-            </div>
-        </form>
-    </div>
-    <!-- Leave me at the bottom of body -->
-    <script src="index.js"></script>
+        <!-- Leave me at the bottom of body -->
+        <script src="index.js"></script>
 </body>
+
 </html>
-
-
-
-
-
-
