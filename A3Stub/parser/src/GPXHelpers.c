@@ -805,7 +805,7 @@ char* gpxComponentsToJSON(char* filename){
         }
     }
     else if (trackLen>0){
-        for (Node* node = doc->routes->head; node!=NULL; node=node->next){
+        for (Node* node = doc->tracks->head; node!=NULL; node=node->next){
             Track* track = node->data;
             char* temp = trackComponentToJSON(count, track);
             memsize+=strlen(temp);
