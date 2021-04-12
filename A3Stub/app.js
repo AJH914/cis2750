@@ -2,6 +2,7 @@
 
 // C library API
 const ffi = require('ffi-napi');
+const mysql = require('mysql2/promise');
 let parserLib = ffi.Library("./parser/bin/libgpxparser.so", {
   "gpxFileToJSON": ["string", ["string"]],
   "validateGPXFile": ["bool", ["string", "string"]],
@@ -9,6 +10,7 @@ let parserLib = ffi.Library("./parser/bin/libgpxparser.so", {
   "otherDataListToJSON": ["string", ["string", "string"]],
   "changeName": ["bool", ["string", "string", "string"]]
 });
+let connection;
 
 // Express App (Routes)
 const express = require("express");
