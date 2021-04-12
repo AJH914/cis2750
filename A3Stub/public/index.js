@@ -124,6 +124,36 @@ $(document).ready(function() {
             }
         });
     });
+    //Link A4 Endpoints
+    $(document).on('click', '#Loginbutton', function(e){
+        e.preventDefault();
+        var username = $('#Username').val();
+        var password = $('#Password').val();
+        var database = $('#Database').val();
+        var host = 'dursley.socs.uoguelph.ca';
+        $.ajax({
+            type : 'get',
+            url : '/login',
+            dataType : 'json',
+            data : {
+                username : username,
+                password : password,
+                database : database,
+                host : host
+            },
+            success : function(data){
+                if (data == true){
+                    alert("Connected to database.");
+                }
+                else{
+                    alert("Failed to connect to database.");
+                }
+            },
+            fail : function(error){
+                console.log(error);
+            }
+        });
+    });
 });
 
 //End of document.ready

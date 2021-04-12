@@ -132,6 +132,25 @@ app.get('/changeComponentName', function(req, res){
   res.send(changeName);
 });
 
+app.get('/login', function(req, res){
+  var username = req.query.username;
+  var password = req.query.password;
+  var database = req.query.database;
+  var host = req.query.host;
+  try{
+    connection = mysql.createConnection({
+      user : username,
+      password : password,
+      database : database,
+      host : host
+    });
+    res.send(true);
+  }
+  catch(e){
+    res.send(false);
+  }
+});
+
 app.listen(portNum);
 console.log('Running app at localhost: ' + portNum);
 
