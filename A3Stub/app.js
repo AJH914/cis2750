@@ -81,6 +81,13 @@ app.get('/uploads/:name', function(req , res){
 
 //******************** Your code goes here ******************** 
 
+async function createTables(){
+  await connection.execute(`CREATE TABLE IF NOT EXISTS FILE(gpx_id INT AUTO_INCREMENT PRIMARY KEY, file_name VARCHAR(60) NOT NULL, ver DECIMAL(2,1) NOT NULL, creator VARCHAR(256) NOT NULL);`);
+  await connection.execute(`CREATE TABLE IF NOT EXISTS ROUTE(route_id INT AUTO_INCREMENT PRIMARY KEY, route_name VARCHAR(256), route_len FLOAT(15,7) NOT NULL, gpx_id INT NOT NULL, FOREIGN KEY(gpx_id) REFERENCES FILE(gpx_id) ON DELETE CASCADE);`);
+  await connection.execute(`CREATE TABLE IF NOT EXISTS POINT(point_id INT AUTO_INCREMENT PRIMARY KEY, point_index INT NOT NULL, latitude DECIMAL(11,7) NOT NULL, longitude DECIMAL(11,7) NOT NULL, point_name VARCHAR(256), route_id INT NOT NULL, FOREIGN KEY(route_id) REFERENCES ROUTE(route_id) ON DELETE CASCADE);`);
+
+}
+
 app.get('/filelogdata', function(req, res){
   var jsonArray = getFileLogPanelData();
   console.log(jsonArray);
@@ -144,6 +151,7 @@ app.get('/login', async function(req, res){
       database : database,
       host : host
     });
+    await createTables();
     res.send(true);
   }
   catch(e){
