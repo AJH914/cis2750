@@ -212,6 +212,7 @@ app.get('/populateToTables', async function(req, res){
   var files = fs.readdirSync(pathToFiles);
   var schemaFile = getSchemaFile();
   for (var file of files){
+    console.log(file);
     var checker = checkIfFile(file);
     if (checker == true){
       continue;
@@ -220,6 +221,7 @@ app.get('/populateToTables', async function(req, res){
       continue;
     }
     var json = parserLib.gpxFileToJSON("./uploads/" + file);
+    console.log(json);
     var sql = fileJsonToSql(json);
     await connection.execute(sql);
     var routeArray = parserLib.routesFromFileToJson("./uploads/" + file);
