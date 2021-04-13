@@ -877,3 +877,76 @@ bool changeName(char* filename, char* oldName, char* newName){
     }
     return false;
 }
+
+char* routesFromFileToJson(char* filename){
+    if (filename == NULL){
+        return "[]";
+    }
+    GPXdoc* doc = createGPXdoc(filename);
+    if (doc == NULL){
+        return "[]";
+    }
+    int unnamedCounter = 1;
+    for (Node* node = doc->routes->head; node!=NULL; node=node->next){
+        Route* rte = node->data;
+        if (strcmp(rte->name, "") == 0){
+            sprintf(rte->name, "Unnamed route %d", unnamedCounter);
+            unnamedCounter++;
+        } 
+    }
+    return routeListToJSON(doc->routes);
+}
+
+char* waypointsFromFileToJson(char* filename, char* routeName){
+    if (filename == NULL || routeName == NULL){
+        return "[]";
+    }
+    GPXdoc* doc = createGPXdoc(filename);
+    if (doc == NULL){
+        return "[]";
+    }
+    int unnamedCounter = 1;
+    for (Node* node = doc->routes->head; node!=NULL; node=node->next){
+        Route* rte = node->data;
+        if (strcmp(rte->name, "") == 0){
+            sprintf(rte->name, "Unnamed route %d", unnamedCounter);
+            unnamedCounter++;
+        } 
+    }
+    Route* route = getRoute(doc, routeName);
+    if (route == NULL){
+        return "[]";
+    }
+    int memsize = 100;
+    char* json = calloc(memsize, sizeof(char));
+    strcat(json, "[");
+    int index = 0;
+    for (Node* node = route->waypoints->head; node!=NULL; node=node->next){
+        char* temp = waypointToJson(node->data, index);
+        memsize+=strlen(temp)+5;
+        strcat(json, temp);
+        free(temp);
+        if (node->next!=NULL){
+            strcat(json, ",");
+        }
+    }
+    strcat(json, "]");
+    return json;
+}
+
+char* waypointToJson(Waypoint* wpt, int index){
+    if (wpt == NULL || index<0){
+        return "{}";
+    }
+    char* json = calloc(1000, sizeof(char));
+    char* name = calloc(100, sizeof(char));
+    if (strlen(wpt->name) == 0){
+        strcat(name, "null");
+    }
+    else{
+        strcat(name, wpt->name);
+    }
+    sprintf(json, "{\"name\":\"%s\",\"lat\":%.6f,\"lon\":%.6f,\"index\":%d}", name, wpt->latitude, wpt->longitude, index);
+    free(name);
+    return json;
+}

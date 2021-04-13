@@ -114,4 +114,10 @@ char* otherDataListToJSON(char* filename, char* componentName);
 
 bool changeName(char* filename, char* oldName, char* newName);
 
+char* routesFromFileToJson(char* filename);
+
+char* waypointToJson(Waypoint* wpt, int index);
+
+char* waypointsFromFileToJson(char* filename, char* routeName);
+
 #endif

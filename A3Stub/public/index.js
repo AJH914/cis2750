@@ -144,6 +144,17 @@ $(document).ready(function() {
             success : function(data){
                 if (data == true){
                     alert("Connected to database.");
+                    $.ajax({
+                        type : 'get',
+                        url : 'populateToTables',
+                        dataType : 'json',
+                        success : function(data){
+                            alert(data);
+                        },
+                        fail : function(error){
+                            alert(error);
+                        }
+                    });
                 }
                 else{
                     alert("Failed to connect to database.");
