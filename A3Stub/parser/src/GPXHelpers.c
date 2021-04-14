@@ -10,6 +10,9 @@
 #include "GPXParser.h"
 #include "GPXHelpers.h"
 
+
+int ROUTE_NUM = 1;
+
 GPXdoc* initDoc(){
     GPXdoc* doc = calloc(1, sizeof(GPXdoc));
     doc->creator = calloc(256, sizeof(char));
@@ -680,6 +683,7 @@ int getIndex(char* string, char c){
 
 char* gpxFileToJSON(char* filename){
     GPXdoc* gpx = createGPXdoc(filename);
+    ROUTE_NUM=1;
     if (gpx == NULL){
         return "{}";
     }
@@ -694,6 +698,7 @@ char* gpxFileToJSON(char* filename){
 
 bool validateGPXFile(char* filename, char* schemaFile){
     GPXdoc* gpx = createValidGPXdoc(filename, schemaFile);
+    ROUTE_NUM=1;
     if (gpx == NULL){
         return false;
     }
@@ -762,6 +767,7 @@ char* trackComponentToJSON(int trackNum, Track* track){
 
 char* gpxComponentsToJSON(char* filename){
     GPXdoc* doc = createGPXdoc(filename);
+    ROUTE_NUM=1;
     int memsize = 1000;
     char* json = calloc(memsize, sizeof(char));
     strcat(json, "[");
@@ -843,6 +849,7 @@ char* otherDataListToJSON(char* filename, char* componentName){
         return "[]";
     }
     GPXdoc* doc = createGPXdoc(filename);
+    ROUTE_NUM=1;
     if (doc == NULL){
         return "[]";
     }
@@ -866,6 +873,7 @@ bool changeName(char* filename, char* oldName, char* newName){
         return false;
     }
     GPXdoc* doc = createGPXdoc(filename);
+    ROUTE_NUM=1;
     if (doc == NULL){
         return false;
     }
@@ -889,6 +897,7 @@ char* routesFromFileToJson(char* filename){
         return bla;
     }
     GPXdoc* doc = createGPXdoc(filename);
+    ROUTE_NUM=1;
     if (doc == NULL){
         char* bla = calloc(100, sizeof(char));
         strcat(bla, "[]");
@@ -912,6 +921,7 @@ char* waypointsFromFileToJson(char* filename, char* routeName){
         return bla;
     }
     GPXdoc* doc = createGPXdoc(filename);
+    ROUTE_NUM=1;
     if (doc == NULL){
         char* bla = calloc(100, sizeof(char));
         strcat(bla, "[]");
