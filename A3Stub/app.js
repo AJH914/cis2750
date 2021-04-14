@@ -191,6 +191,7 @@ app.get('/populateToTables', async function(req, res){
     var gpxId = rows[0].gpx_id;
     var unnamedCounter = 1;
     for (var route of routeArray){
+      console.log(route);
       sql = routeToSql(route, gpxId);
       await connection.execute(sql);
       var waypointArray = parserLib.waypointsFromFileToJson("./uploads/"+file, route.name);
