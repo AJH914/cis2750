@@ -946,6 +946,7 @@ char* waypointsFromFileToJson(char* filename, char* routeName){
         if (node->next!=NULL){
             strcat(json, ",");
         }
+        index++;
     }
     strcat(json, "]");
     return json;

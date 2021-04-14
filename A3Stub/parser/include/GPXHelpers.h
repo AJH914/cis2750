@@ -12,6 +12,8 @@
 #include "LinkedListAPI.h"
 #include "GPXParser.h"
 
+int ROUTE_NUM = 1;
+
 GPXdoc* initDoc();
 
 Waypoint* initWaypoint();

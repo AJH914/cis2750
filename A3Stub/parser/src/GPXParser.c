@@ -73,6 +73,7 @@ GPXdoc* createGPXdoc(char* filename){
     //get creator, version, namespace
     xmlFreeDoc(doc);
     xmlCleanupParser();
+    ROUTE_NUM=1;
     return gpxdoc;
 }
 
