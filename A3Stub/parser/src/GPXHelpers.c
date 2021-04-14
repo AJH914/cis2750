@@ -880,11 +880,15 @@ bool changeName(char* filename, char* oldName, char* newName){
 
 char* routesFromFileToJson(char* filename){
     if (filename == NULL){
-        return "[]";
+        char* bla = calloc(100, sizeof(char));
+        strcat(bla, "[]");
+        return bla;
     }
     GPXdoc* doc = createGPXdoc(filename);
     if (doc == NULL){
-        return "[]";
+        char* bla = calloc(100, sizeof(char));
+        strcat(bla, "[]");
+        return bla;
     }
     int unnamedCounter = 1;
     for (Node* node = doc->routes->head; node!=NULL; node=node->next){
@@ -899,11 +903,15 @@ char* routesFromFileToJson(char* filename){
 
 char* waypointsFromFileToJson(char* filename, char* routeName){
     if (filename == NULL || routeName == NULL){
-        return "[]";
+        char* bla = calloc(100, sizeof(char));
+        strcat(bla, "[]");
+        return bla;
     }
     GPXdoc* doc = createGPXdoc(filename);
     if (doc == NULL){
-        return "[]";
+        char* bla = calloc(100, sizeof(char));
+        strcat(bla, "[]");
+        return bla;
     }
     int unnamedCounter = 1;
     for (Node* node = doc->routes->head; node!=NULL; node=node->next){
@@ -915,7 +923,9 @@ char* waypointsFromFileToJson(char* filename, char* routeName){
     }
     Route* route = getRoute(doc, routeName);
     if (route == NULL){
-        return "[]";
+        char* bla = calloc(100, sizeof(char));
+        strcat(bla, "[]");
+        return bla;
     }
     int memsize = 100;
     char* json = calloc(memsize, sizeof(char));
