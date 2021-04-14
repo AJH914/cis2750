@@ -10,6 +10,8 @@
 #include "GPXParser.h"
 #include "GPXHelpers.h"
 
+int ROUTE_NUM = 1;
+
 GPXdoc* initDoc(){
     GPXdoc* doc = calloc(1, sizeof(GPXdoc));
     doc->creator = calloc(256, sizeof(char));
@@ -628,7 +630,8 @@ char* routeToJSON2(void* data){
         strcat(name, rt->name);
     }
     else{
-        strcat(name, "None");
+        sprintf(name, "No_name %d", ROUTE_NUM);
+        ROUTE_NUM++;
     }
     sprintf(json, "{\"name\":\"%s\",\"numPoints\":%d,\"len\":%.1f,\"loop\":%s}", name, getLength(rt->waypoints), round10(getRouteLen(rt)), isLoop);
     free(isLoop);
