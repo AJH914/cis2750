@@ -237,7 +237,7 @@ function getSchemaFile(){
 function fileJsonToSql(json){
   var headers = `(file_name, ver, creator)`;
   var fileObj = JSON.parse(json);
-  var values =  `(\"${fileObj.fn}\", ${fileObj.version}, \"${fileObj.creator}\")`;
+  var values =  `(\"${fileObj.fn.replace("./uploads/", "")}\", ${fileObj.version}, \"${fileObj.creator}\")`;
   var sql = `INSERT INTO FILE ${headers} VALUES ${values};`;
   return sql;
 }
