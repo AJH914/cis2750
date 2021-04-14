@@ -187,6 +187,7 @@ app.get('/populateToTables', async function(req, res){
     var routeArray = parserLib.routesFromFileToJson("./uploads/" + file);
     routeArray = JSON.parse(routeArray);
     var [rows, columns] = await connection.execute(`SELECT gpx_id FROM FILE WHERE file_name = \"${file}\";`);
+    console.log(rows);
     var gpxId = rows[0].gpx_id;
     var unnamedCounter = 1;
     for (var route of routeArray){
