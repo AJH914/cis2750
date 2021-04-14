@@ -146,7 +146,7 @@ $(document).ready(function() {
                     alert("Connected to database.");
                     $.ajax({
                         type : 'get',
-                        url : 'populateToTables',
+                        url : '/populateToTables',
                         dataType : 'json',
                         success : function(data){
                             alert(data);
