@@ -150,6 +150,9 @@ app.get('/login', async function(req, res){
       host : host
     });
     await createTables();
+    if (connection == undefined){
+      console.log("Connection undefined 1");
+    }
     res.send(true);
   }
   catch(e){
@@ -158,12 +161,14 @@ app.get('/login', async function(req, res){
 });
 
 app.get('/populateToTables', async function(req, res){
+  if (connection == undefined){
+    console.log("Connection undefined 2");
+  }
   var pathToFiles = path.join(__dirname + "/uploads/");
   var files = fs.readdirSync(pathToFiles);
   var schemaFile = getSchemaFile();
   for (var file of files){
     console.log(file);
-    console.log(connection);
     var checker = await checkIfFile(file);
     if (checker == true){
       console.log("File is already in table.");
