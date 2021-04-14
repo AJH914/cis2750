@@ -934,6 +934,7 @@ char* waypointsFromFileToJson(char* filename, char* routeName){
     for (Node* node = route->waypoints->head; node!=NULL; node=node->next){
         char* temp = waypointToJson(node->data, index);
         memsize+=strlen(temp)+5;
+        json = realloc(json, memsize*sizeof(char));
         strcat(json, temp);
         free(temp);
         if (node->next!=NULL){
