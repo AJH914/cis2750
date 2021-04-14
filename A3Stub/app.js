@@ -223,7 +223,7 @@ app.get('/populateToTables', async function(req, res){
       continue;
     }
     var json = parserLib.gpxFileToJSON("./uploads/" + file);
-    //console.log(json);
+    console.log(json);
     var sql = fileJsonToSql(json);
     console.log(sql);
     await connection.execute(sql);
