@@ -941,6 +941,7 @@ char* waypointsFromFileToJson(char* filename, char* routeName){
         }
     }
     strcat(json, "]");
+    printf("%s\n", json);
     return json;
 }
 
