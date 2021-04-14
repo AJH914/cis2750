@@ -10,8 +10,6 @@
 #include "GPXParser.h"
 #include "GPXHelpers.h"
 
-int ROUTE_NUM = 1;
-
 GPXdoc* initDoc(){
     GPXdoc* doc = calloc(1, sizeof(GPXdoc));
     doc->creator = calloc(256, sizeof(char));
