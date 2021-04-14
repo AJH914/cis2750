@@ -161,6 +161,7 @@ app.get('/login', async function(req, res){
 });
 
 app.get('/populateToTables', async function(req, res){
+  console.log("Populating tables");
   if (connection == undefined){
     console.log("Connection undefined 2");
   }
