@@ -190,7 +190,14 @@ Route* createRoute(char* name){
         Route* newRoute = calloc(1, sizeof(Route));
         newRoute->waypoints=initializeList(&waypointToString, &deleteWaypoint, &compareWaypoints);
         newRoute->otherData=initializeList(&gpxDataToString, &deleteGpxData, &compareGpxData);
-        newRoute->name=stringCopy(name, 0, strlen(name));
+        if (strlen(name) == 0){
+            newRoute->name = calloc(100, sizeof(char));
+            sprintf(newRoute->name, "No_name %d", ROUTE_NUM);
+            ROUTE_NUM++;
+        }
+        else{
+            newRoute->name=stringCopy(name, 0, strlen(name));
+        }
         return newRoute;
     }
 }
@@ -628,10 +635,6 @@ char* routeToJSON2(void* data){
     char* name = calloc(256, sizeof(char));
     if (strlen(rt->name)>0){
         strcat(name, rt->name);
-    }
-    else{
-        sprintf(name, "No_name %d", ROUTE_NUM);
-        ROUTE_NUM++;
     }
     sprintf(json, "{\"name\":\"%s\",\"numPoints\":%d,\"len\":%.1f,\"loop\":%s}", name, getLength(rt->waypoints), round10(getRouteLen(rt)), isLoop);
     free(isLoop);
