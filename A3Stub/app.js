@@ -205,6 +205,24 @@ app.get('/populateToTables', async function(req, res){
   }
 });
 
+app.get('/clearTables', async function(req, res){
+  var returnObj = {
+    message : null
+  }
+  try{
+    await connection.execute(`DELETE FROM POINT;`);
+    await connection.execute(`DELETE FROM ROUTE;`);
+    await connection.execute(`DELETE FROM FILE;`);
+    returnObj.message = `SUCCESSFULLY CLEARED TABLES;`;
+  }
+  catch(e){
+    returnObj.message = `FAILED TO CLEAR TABLES;`;
+  }
+  finally{
+    res.send(returnObj);
+  }
+});
+
 app.listen(portNum);
 console.log('Running app at localhost: ' + portNum);
 

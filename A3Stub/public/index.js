@@ -165,6 +165,20 @@ $(document).ready(function() {
             }
         });
     });
+    $(document).on('click', '#ClearTablesButton', function(e){
+        e.preventDefault();
+        $.ajax({
+            type : 'get',
+            url : '/clearTables',
+            dataType : 'json',
+            success : function(data){
+                alert(data.message);
+            },
+            fail : function(error){
+                alert(error);
+            }
+        });
+    });
 });
 
 //End of document.ready
