@@ -179,6 +179,20 @@ $(document).ready(function() {
             }
         });
     });
+    $(document).on('click', '#DisplayTablesButton', function(e){
+        e.preventDefault();
+        $.ajax({
+            type : 'get',
+            url : '/displayTables',
+            dataType : 'json',
+            success : function(data){
+                alert(data.message);
+            },
+            fail : function(error){
+                alert(error);
+            }
+        });
+    });
 });
 
 //End of document.ready

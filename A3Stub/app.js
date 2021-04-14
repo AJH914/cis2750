@@ -223,6 +223,24 @@ app.get('/clearTables', async function(req, res){
   }
 });
 
+app.get('/displayTables', async function(req, res){
+  var returnObj = {
+    message : null
+  }
+  try{
+    var [rows, fields] = await connection.execute(`SELECT COUNT(*) AS numFiles FROM FILE;`);
+    var [rows1, fields1] = await connection.execute(`SELECT COUNT(*) AS numRoutes FROM ROUTE;`);
+    var [rows2, fields2] = await connection.execute(`SELECT COUNT(*) AS numPoints FROM POINT;`);
+    returnObj.message = `DATABASE HAS ${rows[0].numFiles} FILES, ${rows1[0].numRoutes} ROUTES, AND ${rows2[0].numPoints} POINTS;`;
+  }
+  catch(e){
+    returnObj.message = `FAILED TO DISPLAY DATABASE;`;
+  }
+  finally{
+    res.send(returnObj);
+  }
+});
+
 app.listen(portNum);
 console.log('Running app at localhost: ' + portNum);
 
