@@ -189,18 +189,18 @@ app.get('/populateToTables', async function(req, res){
     var [rows, columns] = await connection.execute(`SELECT gpx_id FROM FILE WHERE file_name = \"${file}\";`);
     console.log(rows);
     var gpxId = rows[0].gpx_id;
-    var unnamedCounter = 1;
     for (var route of routeArray){
       console.log(route);
       sql = routeToSql(route, gpxId);
       await connection.execute(sql);
       var waypointArray = parserLib.waypointsFromFileToJson("./uploads/"+file, route.name);
       waypointArray = JSON.parse(waypointArray);
-      var [rows1, fields1] = await connection.execute(`SELECT route_id FROM ROUTE WHERE route_len = ${route.len}`);
+      var [rows1, fields1] = await connection.execute(`SELECT route_id FROM ROUTE WHERE route_name = \"${route.name}\";`);
       console.log(rows1[0].route_id);
-      //for (var waypoint of waypointArray){
-        
-      //}
+      for (var waypoint of waypointArray){
+        sql = waypointToSql(waypoint, rows1[0].route_id);
+        await connection.execute(sql);
+      }
     }
   }
 });
@@ -259,6 +259,12 @@ function routeToSql(route, gpx_id){
   return sql;
 }
 
+function waypointToSql(waypoint, route_id){
+  var headers = `(point_index, latitude, longitude, point_name, route_id)`;
+  var values = `(${waypoint.index}, ${waypoint.lat}, ${waypoint.lon}, \"${waypoint.name}\", ${route_id})`;
+  var sql = `INSERT INTO POINT ${headers} VALUES ${values};`;
+  return sql;
+}
 
 function getFileLogPanelData(){
   var pathToFiles = path.join(__dirname + "/uploads/");
