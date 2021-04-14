@@ -163,6 +163,7 @@ app.get('/populateToTables', async function(req, res){
   var schemaFile = getSchemaFile();
   for (var file of files){
     console.log(file);
+    console.log(connection);
     var checker = await checkIfFile(file);
     if (checker == true){
       console.log("File is already in table.");
