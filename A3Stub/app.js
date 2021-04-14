@@ -215,9 +215,11 @@ app.get('/populateToTables', async function(req, res){
     console.log(file);
     var checker = checkIfFile(file);
     if (checker == true){
+      console.log("File is already in table.");
       continue;
     }
     if (parserLib.validateGPXFile("./uploads/" + file, schemaFile) == false){
+      console.log("File is invalid");
       continue;
     }
     var json = parserLib.gpxFileToJSON("./uploads/" + file);
