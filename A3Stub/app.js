@@ -259,7 +259,8 @@ app.get('/addRoute', async function(req, res){
     console.log(lat);
     console.log(lon);
     for (var i = 0; i<lat.length; i++){
-      console.log(typeof lat[i]);
+      lat[i] = parseFloat(lat[i]);
+      lon[i] = parseFloat(lon[i]);
     }
     var addedRoute = parserLib.addRouteToDoc("./uploads/"+filename, routeName);
     if (addedRoute){

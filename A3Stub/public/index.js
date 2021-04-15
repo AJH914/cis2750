@@ -200,12 +200,6 @@ $(document).ready(function() {
         var lonInput = $('#lonInput').val().toString();
         latInput = latInput.split(/[\s, ]+/);
         lonInput = lonInput.split(/[\s, ]+/);
-        for (var i = 0; i<latInput.length; i++){
-            latInput[i] = parseFloat(latInput[i]);
-            lonInput[i] = parseFloat(lonInput[i]);
-            console.log(typeof latInput[i]);
-            console.log(typeof lonInput[i]);
-        }
         $.ajax({
             type : 'get',
             url : '/addRoute',
