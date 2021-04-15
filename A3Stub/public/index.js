@@ -203,6 +203,8 @@ $(document).ready(function() {
         for (var i = 0; i<latInput.length; i++){
             latInput[i] = parseFloat(latInput[i]);
             lonInput[i] = parseFloat(lonInput[i]);
+            console.log(typeof latInput[i]);
+            console.log(typeof lonInput[i]);
         }
         $.ajax({
             type : 'get',
