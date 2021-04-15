@@ -976,3 +976,20 @@ char* waypointToJson(Waypoint* wpt, int index){
     free(name);
     return json;
 }
+
+bool addRouteToDoc(char* filename, char* routeName){
+    GPXdoc* doc = createGPXdoc(filename);
+    Route* rte = createRoute(routeName);
+    addRoute(doc, rte);
+    return writeGPXdoc(doc, filename);
+}
+
+bool addWaypointToRoute(char* filename, char* routeName, char* waypointAsJson){
+    GPXdoc* doc = createGPXdoc(filename);
+    Route* rte = getRoute(doc, routeName);
+    Waypoint* wpt = JSONtoWaypoint(waypointAsJson);
+    addWaypoint(rte, wpt);
+    return writeGPXdoc(doc, filename);
+}
+
+

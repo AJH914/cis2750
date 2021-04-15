@@ -121,4 +121,8 @@ char* waypointToJson(Waypoint* wpt, int index);
 
 char* waypointsFromFileToJson(char* filename, char* routeName);
 
+bool addRouteToDoc(char* filename, char* routeName);
+
+bool addWaypointToRoute(char* filename, char* routeName, char* waypointAsJson);
+
 #endif

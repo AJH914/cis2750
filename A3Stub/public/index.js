@@ -193,6 +193,35 @@ $(document).ready(function() {
             }
         });
     });
+    $(document).on('click', '#createRouteButton', function(e){
+        e.preventDefault();
+        var routeName = $('#routeNameInput').val().toString();
+        var latInput = $('#latInput').val().toString();
+        var lonInput = $('#lonInput').val().toString();
+        latInput = latInput.split(/[\s, ]+/);
+        lonInput = lonInput.split(/[\s, ]+/);
+        for (var i = 0; i<latInput.length; i++){
+            latInput[i] = parseFloat(latInput[i]);
+            lonInput[i] = parseFloat(lonInput[i]);
+        }
+        $.ajax({
+            type : 'get',
+            url : '/addRoute',
+            dataType : 'json',
+            data : {
+                filename : currentFileName,
+                routeName : routeName,
+                lat : latInput,
+                lon : lonInput
+            },
+            success : function(data){
+                alert(data.message);
+            },
+            fail : function(error){
+                alert(error);
+            }
+        });
+    });
 });
 
 //End of document.ready

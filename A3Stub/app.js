@@ -10,7 +10,9 @@ let parserLib = ffi.Library("./parser/bin/libgpxparser.so", {
   "otherDataListToJSON": ["string", ["string", "string"]],
   "changeName": ["bool", ["string", "string", "string"]],
   "routesFromFileToJson": ["string", ["string"]],
-  "waypointsFromFileToJson": ["string", ["string", "string"]]
+  "waypointsFromFileToJson": ["string", ["string", "string"]],
+  "addRouteToDoc": ["bool", ["string", "string"]],
+  "addWaypointToRoute": ["bool", ["string", "string", "string"]]
 });
 let connection;
 
@@ -238,6 +240,21 @@ app.get('/displayTables', async function(req, res){
   }
   finally{
     res.send(returnObj);
+  }
+});
+
+app.get('/addRoute', async function(req, res){
+  var returnObj = {
+    message : null
+  }
+  try{
+    var filename = req.query.filename;
+    var routeName = req.query.routeName;
+    var lat = req.query.lat;
+    var lon = req.query.lon;
+  }
+  catch(e){
+
   }
 });
 
