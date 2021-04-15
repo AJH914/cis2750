@@ -264,7 +264,7 @@ app.get('/addRoute', async function(req, res){
       console.log(route);
       route = JSON.parse(route);
       console.log(route);
-      var [rows, fields] = connection.execute(`SELECT gpx_id FROM FILE WHERE file_name=\"${filename}\";`);
+      var [rows, fields] = await connection.execute(`SELECT gpx_id FROM FILE WHERE file_name=\"${filename}\";`);
       console.log(rows[0].gpx_id);
       var sql = routeToSql(route, rows[0].gpx_id);
       console.log(sql);
@@ -281,7 +281,7 @@ app.get('/addRoute', async function(req, res){
         else{
           waypoint = parserLib.getWaypointFromFileAsJson("./uploads/"+filename, routeName);
           waypoint = JSON.parse(waypoint);
-          var [rows1, fields1] = connection.execute(`SELECT route_id FROM ROUTE WHERE route_name=\"${route.name}\";`);
+          var [rows1, fields1] = await connection.execute(`SELECT route_id FROM ROUTE WHERE route_name=\"${route.name}\";`);
           sql = waypointToSql(waypoint, rows1[0].route_id);
           await connection.execute(sql);
         }
