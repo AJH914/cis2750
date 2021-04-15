@@ -259,12 +259,14 @@ app.get('/addRoute', async function(req, res){
     console.log(lat);
     console.log(lon);
     var addedRoute = parserLib.addRouteToDoc("./uploads/"+filename, routeName);
-    console.log(addedRoute);
     if (addedRoute){
       var route = parserLib.getRouteFromFileAsJson("./uploads/"+filename, routeName);
+      console.log(route);
       route = JSON.parse(route);
+      console.log(route);
       var [rows, fields] = connection.execute(`SELECT gpx_id FROM FILE WHERE file_name=\"${filename}\";`);
       var sql = routeToSql(route, rows[0].gpx_id);
+      console.log(sql);
       await connection.execute(sql);
       for (var i = 0; i<lat.length; i++){
         var waypoint = {
