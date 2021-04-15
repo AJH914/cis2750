@@ -290,6 +290,10 @@ app.get('/addRoute', async function(req, res){
           await connection.execute(sql);
         }
       }
+      route = parserLib.getRouteFromFileAsJson("./uploads/"+filename, routeName);
+      route = JSON.parse(route);
+      var [rows1, fields1] = await connection.execute(`SELECT route_id FROM ROUTE WHERE route_name=\"${route.name}\";`);
+      await connection.execute(`UPDATE ROUTE SET route_len=${route.len} WHERE route_id=${rows1[0].route_id};`);
     }
     returnObj.message = "Successfully added route.";
     res.send(returnObj);
