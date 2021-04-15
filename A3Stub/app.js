@@ -265,7 +265,7 @@ app.get('/addRoute', async function(req, res){
       route = JSON.parse(route);
       console.log(route);
       var [rows, fields] = await connection.execute(`SELECT gpx_id FROM FILE WHERE file_name=\"${filename}\";`);
-      console.log(rows[0].gpx_id);
+      console.log(rows);
       var sql = routeToSql(route, rows[0].gpx_id);
       console.log(sql);
       await connection.execute(sql);
