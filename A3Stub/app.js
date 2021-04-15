@@ -252,6 +252,12 @@ app.get('/addRoute', async function(req, res){
     var routeName = req.query.routeName;
     var lat = req.query.lat;
     var lon = req.query.lon;
+    console.log(filename);
+    console.log(routeName);
+    console.log(lat);
+    console.log(lon);
+    var addedRoute = parserLib.addRouteToDoc("./uploads/"+filename, routeName);
+    console.log(addedRoute);
   }
   catch(e){
 
