@@ -12,7 +12,9 @@ let parserLib = ffi.Library("./parser/bin/libgpxparser.so", {
   "routesFromFileToJson": ["string", ["string"]],
   "waypointsFromFileToJson": ["string", ["string", "string"]],
   "addRouteToDoc": ["bool", ["string", "string"]],
-  "addWaypointToRoute": ["bool", ["string", "string", "string"]]
+  "addWaypointToRoute": ["bool", ["string", "string", "string"]],
+  "getRouteFromFileAsJson": ["string", ["string", "string"]],
+  "getWaypointFromFileAsJson": ["string", ["string", "string"]]
 });
 let connection;
 
@@ -258,9 +260,36 @@ app.get('/addRoute', async function(req, res){
     console.log(lon);
     var addedRoute = parserLib.addRouteToDoc("./uploads/"+filename, routeName);
     console.log(addedRoute);
+    if (addedRoute){
+      var route = parserLib.getRouteFromFileAsJson("./uploads/"+filename, routeName);
+      route = JSON.parse(route);
+      var [rows, fields] = connection.execute(`SELECT gpx_id FROM FILE WHERE file_name=\"${filename}\";`);
+      var sql = routeToSql(route, rows[0].gpx_id);
+      await connection.execute(sql);
+      for (var i = 0; i<lat.length; i++){
+        var waypoint = {
+          latitude : lat[i],
+          longitude : lon[i]
+        }
+        var addedWaypoint = parserLib.addWaypointToRoute("./uploads/"+filename, routeName, JSON.stringify(waypoint));
+        if (addedWaypoint == false){
+          console.log("Failed to add waypoint");
+        }
+        else{
+          waypoint = parserLib.getWaypointFromFileAsJson("./uploads/"+filename, routeName);
+          waypoint = JSON.parse(waypoint);
+          var [rows1, fields1] = connection.execute(`SELECT route_id FROM ROUTE WHERE route_name=\"${route.name}\";`);
+          sql = waypointToSql(waypoint, rows1[0].route_id);
+          await connection.execute(sql);
+        }
+      }
+    }
+    returnObj.message = "Successfully added route.";
+    res.send(returnObj);
   }
   catch(e){
-
+    returnObj.message = "Failed to add route";
+    res.send(returnObj);
   }
 });
 

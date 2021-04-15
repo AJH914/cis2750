@@ -125,4 +125,9 @@ bool addRouteToDoc(char* filename, char* routeName);
 
 bool addWaypointToRoute(char* filename, char* routeName, char* waypointAsJson);
 
+char* getRouteFromFileAsJson(char* filename, char* routeName);
+
+
+char* getWaypointFromFileAsJson(char* filename, char* routeName);
+
 #endif

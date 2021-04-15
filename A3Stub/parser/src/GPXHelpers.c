@@ -992,4 +992,16 @@ bool addWaypointToRoute(char* filename, char* routeName, char* waypointAsJson){
     return writeGPXdoc(doc, filename);
 }
 
+char* getRouteFromFileAsJson(char* filename, char* routeName){
+    GPXdoc* doc = createGPXdoc(filename);
+    Route* rte = getRoute(doc, routeName);
+    return routeToJSON2(rte);
+}
+
+char* getWaypointFromFileAsJson(char* filename, char* routeName){
+    GPXdoc* doc = createGPXdoc(filename);
+    Route* rte = getRoute(doc, routeName);
+    Waypoint* wpt = getFromBack(rte->waypoints);
+    return waypointToJson(wpt, getLength(rte->waypoints)-1);
+}
 
